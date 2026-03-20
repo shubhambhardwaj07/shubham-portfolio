@@ -1,0 +1,21 @@
+.c-ring {
+  position:fixed; top:0; left:0;
+  width:30px; height:30px; border-radius:50%;
+  border:1px solid var(--border-hi);
+  pointer-events:none; z-index:99999;
+  transition: width .28s ease, height .28s ease, background .28s ease, border-color .28s ease;
+  will-change:transform;
+}
+.c-ring.expanded {
+  width:50px; height:50px;
+  background:var(--overlay);
+  border-color:var(--text-2);
+}
+.c-dot {
+  position:fixed; top:0; left:0;
+  width:4px; height:4px; border-radius:50%;
+  background:var(--text);
+  pointer-events:none; z-index:99999;
+  will-change:transform;
+}
+@media (hover:none),(pointer:coarse) { .c-ring,.c-dot { display:none !important; } }
