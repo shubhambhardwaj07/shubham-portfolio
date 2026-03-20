@@ -11,8 +11,8 @@
   --border-hi:  rgba(255,255,255,0.30);
   --line:       rgba(255,255,255,0.055);
   --overlay:    rgba(212,208,200,0.05);
-  --font:  'Space Grotesk','Inter',-apple-system,sans-serif;
-  --mono:  'JetBrains Mono','Fira Code','Courier New',monospace;
+  --font: 'Space Grotesk','Inter',-apple-system,sans-serif;
+  --mono: 'JetBrains Mono','Fira Code','Courier New',monospace;
   --ease:  cubic-bezier(0.76,0,0.24,1);
   --ease2: cubic-bezier(0.4,0,0.2,1);
 }
@@ -54,14 +54,15 @@ button { font-family:var(--font); }
 }
 .section-label {
   display:flex; align-items:center; gap:12px;
-  font-size:12px; letter-spacing:0.16em; text-transform:uppercase;
-  color:var(--text-2); margin-bottom:56px; font-weight:600;
+  font-size:clamp(10px,1.1vw,12px); letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--text-2); margin-bottom:clamp(32px,5vw,56px); font-weight:600;
 }
 .section-label-num { font-family:var(--mono); color:var(--text-2); }
 .btn-primary {
   display:inline-flex; align-items:center; gap:8px;
-  font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
-  padding:15px 28px; background:var(--text); color:var(--bg);
+  font-size:clamp(10px,1.1vw,12px); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+  padding:clamp(12px,1.5vw,15px) clamp(20px,2.5vw,28px);
+  background:var(--text); color:var(--bg);
   border-radius:2px; border:1px solid var(--text);
   transition:background .28s var(--ease2),border-color .28s var(--ease2),color .28s var(--ease2),gap .22s ease;
   white-space:nowrap;
@@ -69,8 +70,9 @@ button { font-family:var(--font); }
 .btn-primary:hover { background:var(--bg); color:var(--text); gap:13px; }
 .btn-outline {
   display:inline-flex; align-items:center; gap:8px;
-  font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
-  padding:15px 28px; background:transparent; color:var(--text-2);
+  font-size:clamp(10px,1.1vw,12px); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+  padding:clamp(12px,1.5vw,15px) clamp(20px,2.5vw,28px);
+  background:transparent; color:var(--text-2);
   border-radius:2px; border:1px solid var(--border-mid);
   transition:border-color .28s var(--ease2),color .28s var(--ease2); white-space:nowrap;
 }
