@@ -5,15 +5,26 @@ import './Hero.css'
 export default function Hero() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  // Fix: all useTransform calls at top level
   const yContent = useTransform(scrollYProgress, [0, 1], [0, 80])
   const opacityContent = useTransform(scrollYProgress, [0, 0.55], [1, 0])
   const yBgText = useTransform(scrollYProgress, [0, 1], [0, 50])
-  const opacityBgText = useTransform(scrollYProgress, [0, 0.6], [0.03, 0.015])
+  const yPhoto = useTransform(scrollYProgress, [0, 1], [0, 60])
 
   return (
     <section id="hero" className="hero" ref={ref}>
-      <div className="section-grid" />
+      {/* Grid — full width, always on top of photo */}
+      <div className="section-grid hero-grid" />
+
+      {/* Photo — NO background, just the image + vignette */}
+      <motion.div className="hero-photo-wrap" style={{ y: yPhoto }}>
+        <img
+          src="/profile.png"
+          alt="Shubham Bhardwaj"
+          className="hero-photo"
+        />
+        {/* Vignette fades photo into bg */}
+        <div className="hero-photo-vignette" />
+      </motion.div>
 
       <motion.div
         className="hero-content"
@@ -78,10 +89,9 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Oversized bg letters — fine-thought style */}
       <motion.div
         className="hero-bg-text"
-        style={{ y: yBgText, opacity: opacityBgText }}
+        style={{ y: yBgText }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.03 }}
         transition={{ delay: 0.4, duration: 1.2 }}
