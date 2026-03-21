@@ -5,33 +5,59 @@ import './Contact.css'
 function MapComponent() {
   const mapRef = useRef(null)
   const instanceRef = useRef(null)
-
   useEffect(() => {
     let map = null
     const init = async () => {
       const L = (await import('leaflet')).default
       if (instanceRef.current || !mapRef.current) return
+
+      // Amritsar coordinates
+      const AMRITSAR = [31.6340, 74.8723]
+
       map = L.map(mapRef.current, {
-        center: [12.9716, 77.5946],
-        zoom: 11,
+        center: AMRITSAR,
+        zoom: 4,
         scrollWheelZoom: false,
         zoomControl: false,
         attributionControl: false,
       })
-      L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png').addTo(map)
+
+      // Stadia Maps Stamen Toner — same as Project-Alfa, works deployed
+      L.tileLayer(
+        'https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png?api_key=8523e48c-69a1-4363-a608-2ac1fa9d60ce',
+        { maxZoom: 20 }
+      ).addTo(map)
+
+      // Exact person SVG pin from Project-Alfa with pulsing rings
+      // Dark mode = grey map → dark pin. Light mode = inverted (black) map → light pin
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light'
+      const outerColor = isLight ? '#d4d0c8' : '#1c1c1e'
+      const innerColor = isLight ? '#9a968f' : '#363638'
+      const bodyColor  = isLight ? '#d4d0c8' : '#1c1c1e'
+
+      const svg = `<svg id="mePin" xmlns="http://www.w3.org/2000/svg" width="43.3" height="42.4" viewBox="0 0 43.3 42.4">
+        <style>
+          .ring_outer { animation: opacityPulse 2s cubic-bezier(1,0.14,1,1) infinite; opacity:0.5; }
+          .ring_inner { animation: opacityPulse 2s cubic-bezier(0.4,0.74,0.56,0.82) infinite; opacity:0.8; }
+          @keyframes opacityPulse { 0%{opacity:0.1} 50%{opacity:1} 100%{opacity:0.1} }
+        </style>
+        <path class="ring_outer" fill="${outerColor}" d="M28.6 23c6.1 1.4 10.4 4.4 10.4 8 0 4.7-7.7 8.6-17.3 8.6-9.6 0-17.4-3.9-17.4-8.6 0-3.5 4.2-6.5 10.3-7.9.7-.1-.4-1.5-1.3-1.3C5.5 23.4 0 27.2 0 31.7c0 6 9.7 10.7 21.7 10.7s21.6-4.8 21.6-10.7c0-4.6-5.7-8.4-13.7-10-.8-.2-1.8 1.2-1 1.4z"/>
+        <path class="ring_inner" fill="${innerColor}" d="M27 25.8c2 .7 3.3 1.8 3.3 3 0 2.2-3.7 3.9-8.3 3.9-4.6 0-8.3-1.7-8.3-3.8 0-1 .8-1.9 2.2-2.6.6-.3-.3-2-1-1.6-2.8 1-4.6 2.7-4.6 4.6 0 3.2 5.1 5.7 11.4 5.7 6.2 0 11.3-2.5 11.3-5.7 0-2-2.1-3.9-5.4-5-.7-.1-1.2 1.3-.7 1.5z"/>
+        <path d="M21.6 8.1a4 4 0 0 0 4-4 4 4 0 0 0-4-4.1 4.1 4.1 0 0 0-4.1 4 4 4 0 0 0 4 4.1zm4.9 8v-3.7c0-1.2-.6-2.2-1.7-2.6-1-.4-1.9-.6-2.8-.6h-.9c-1 0-2 .2-2.8.6-1.2.4-1.8 1.4-1.8 2.6V16c0 .9 0 2 .2 2.8.2.8.8 1.5 1 2.3l.2.3.4 1 .1.8.2.7.6 3.6c-.6.3-.9.7-.9 1.2 0 .9 1.4 1.7 3.2 1.7 1.8 0 3.2-.8 3.2-1.7 0-.5-.3-.9-.8-1.2l.6-3.6.1-.7.2-.8.3-1 .1-.3c.3-.8 1-1.5 1.1-2.3.2-.8.2-2 .2-2.8z" fill="${bodyColor}"/>
+      </svg>`
+
       const icon = L.divIcon({
-        html: `<div style="color:var(--text);width:28px;height:28px;display:flex;align-items:center;justify-content:center;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-        </div>`,
-        className: '',
-        iconSize: [28, 28],
-        iconAnchor: [14, 28],
+        className: 'leaflet-data-marker',
+        html: svg,
+        iconAnchor: [22, 28],
+        iconSize: [26, 32],
+        popupAnchor: [0, -30],
       })
-      L.marker([12.9716, 77.5946], { icon })
+
+      L.marker(AMRITSAR, { icon })
         .addTo(map)
-        .bindPopup('Bangalore, India 🇮🇳<br/>Want to connect? Use the form! ✉️')
+        .bindPopup('<strong>Amritsar, Punjab</strong><br/>Shubham\'s hometown 🇮🇳')
+
       instanceRef.current = map
     }
     init()
@@ -98,7 +124,7 @@ export default function Contact() {
               <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
               </svg>
-              Bangalore, India
+              Amritsar, India
             </div>
           </motion.div>
 
