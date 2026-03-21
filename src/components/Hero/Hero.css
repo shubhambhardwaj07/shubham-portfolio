@@ -8,10 +8,10 @@
   background: var(--bg);
 }
 
-/* Grid lines on top of photo */
+/* Grid lines always on top of photo */
 .hero-grid { z-index: 3 !important; pointer-events: none; }
 
-/* Photo — right side */
+/* ── PHOTO ── */
 .hero-photo-wrap {
   position: absolute;
   right: 0; top: 0; bottom: 0;
@@ -20,53 +20,59 @@
   z-index: 1;
   will-change: transform, opacity;
 }
+
 .hero-photo {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: 35% top;
+  object-position: 30% top;
   display: block;
   filter: grayscale(1) contrast(1.1) brightness(0.6);
   mix-blend-mode: luminosity;
 }
+
 [data-theme='light'] .hero-photo {
   filter: grayscale(1) contrast(1.5) brightness(0.52);
   mix-blend-mode: normal;
   opacity: 0.88;
 }
+
 .hero-photo-vignette {
   position: absolute; inset: 0; z-index: 2;
   background:
     linear-gradient(to right,
       var(--bg) 0%,
       color-mix(in srgb,var(--bg) 72%,transparent) 14%,
-      color-mix(in srgb,var(--bg) 18%,transparent) 42%,
-      transparent 62%,
-      color-mix(in srgb,var(--bg) 52%,transparent) 84%,
+      color-mix(in srgb,var(--bg) 18%,transparent) 40%,
+      transparent 60%,
+      color-mix(in srgb,var(--bg) 52%,transparent) 82%,
       var(--bg) 100%
     ),
     linear-gradient(to top, var(--bg) 0%, color-mix(in srgb,var(--bg) 55%,transparent) 16%, transparent 36%),
     linear-gradient(to bottom, var(--bg) 0%, transparent 18%);
 }
+
 [data-theme='light'] .hero-photo-vignette {
   background:
     linear-gradient(to right,
       var(--bg) 0%,
       color-mix(in srgb,var(--bg) 78%,transparent) 14%,
-      color-mix(in srgb,var(--bg) 25%,transparent) 42%,
-      transparent 62%,
-      color-mix(in srgb,var(--bg) 62%,transparent) 84%,
+      color-mix(in srgb,var(--bg) 25%,transparent) 40%,
+      transparent 60%,
+      color-mix(in srgb,var(--bg) 62%,transparent) 82%,
       var(--bg) 100%
     ),
     linear-gradient(to top, var(--bg) 0%, color-mix(in srgb,var(--bg) 58%,transparent) 16%, transparent 36%),
     linear-gradient(to bottom, var(--bg) 0%, transparent 18%);
 }
 
-/* Content */
+/* ── CONTENT ── */
 .hero-content {
   position: relative; z-index: 4;
   width: 100%; max-width: 52%;
   will-change: transform, opacity;
 }
+
 .hero-status {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: clamp(9px,1vw,11px); letter-spacing: 0.18em; text-transform: uppercase;
@@ -81,6 +87,7 @@
   0%,100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.16); }
   50%      { box-shadow: 0 0 0 7px rgba(74,222,128,0); }
 }
+
 .hero-name-wrap { margin-bottom: clamp(16px,3vw,36px); }
 .hero-name-line { overflow: hidden; line-height: 1; }
 .hero-name {
@@ -91,6 +98,7 @@
   will-change: transform;
   white-space: nowrap;
 }
+
 .hero-meta {
   display: flex; align-items: center; gap: 8px;
   margin-bottom: clamp(24px,4vw,52px); flex-wrap: wrap; row-gap: 6px;
@@ -100,6 +108,7 @@
 .hero-sep        { color: var(--text-3); font-size: 12px; }
 .hero-location   { display: flex; align-items: center; gap: 5px; font-size: clamp(11px,1.1vw,13px); color: var(--text-3); }
 .hero-ctas       { display: flex; gap: clamp(10px,1.5vw,14px); flex-wrap: wrap; }
+
 .hero-bg-text {
   position: absolute; right: -2vw; bottom: -4vw;
   font-size: clamp(100px,20vw,280px); font-weight: 900;
@@ -107,6 +116,7 @@
   pointer-events: none; user-select: none; z-index: 2; line-height: 1;
   will-change: transform;
 }
+
 .hero-scroll-hint {
   position: absolute; bottom: clamp(24px,4vw,44px); right: clamp(20px,5vw,52px);
   display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 4;
@@ -127,66 +137,114 @@
   color: var(--text-3); writing-mode: vertical-rl;
 }
 
-/* ── Large desktop (1400px+) ── */
+/* ── LARGE DESKTOP 1400px+ ── */
 @media (min-width: 1400px) {
-  .hero-content { max-width: 48%; }
+  .hero-content { max-width: 46%; }
   .hero-photo-wrap { width: 50%; }
 }
 
-/* ── Tablet landscape (1024px) ── */
-@media (max-width: 1024px) {
-  .hero-content { max-width: 58%; }
+/* ── TABLET LANDSCAPE 1024px ── */
+@media (max-width: 1100px) {
+  .hero-content { max-width: 56%; }
   .hero-photo-wrap { width: 54%; }
-  .hero-name { font-size: clamp(44px,7vw,90px); }
+  .hero-name { font-size: clamp(44px,6.5vw,90px); }
 }
 
-/* ── Tablet portrait (900px) ── */
+/* ── TABLET PORTRAIT 900px ──
+   Photo still visible on right, content takes more space */
 @media (max-width: 900px) {
-  .hero-content { max-width: 65%; }
+  .hero-content { max-width: 68%; }
   .hero-photo-wrap { width: 58%; }
-  .hero-name { white-space: normal; font-size: clamp(42px,8vw,72px); }
+  .hero-name { white-space: normal; font-size: clamp(40px,7.5vw,72px); }
 }
 
-/* ── Mobile (768px) ── */
+/* ── SMALL TABLET / LARGE PHONE 768px ──
+   Photo becomes full-width background, must be VISIBLE */
 @media (max-width: 768px) {
-  .hero { align-items: flex-start; padding-top: clamp(90px,20vw,120px); }
+  .hero {
+    /* Keep center align so content sits in the middle of the screen */
+    align-items: center;
+    min-height: 100svh;
+    padding-top: clamp(90px,18vw,120px);
+    padding-bottom: clamp(60px,10vw,80px);
+  }
   .hero-content { max-width: 100%; }
-  .hero-photo-wrap { width: 100%; left: 0; opacity: 0.45; }
+
+  /* Full-screen photo behind text — clearly visible */
+  .hero-photo-wrap {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    width: 100%;
+    opacity: 1; /* don't fade the whole wrap */
+  }
   .hero-photo {
-    object-position: 70% top;
-    filter: grayscale(1) contrast(1.05) brightness(0.38);
+    width: 100%; height: 100%;
+    object-fit: cover;
+    /* Position face to the right side */
+    object-position: 85% 15%;
+    /* Visible but not overwhelming */
+    filter: grayscale(1) contrast(1.05) brightness(0.5);
     mix-blend-mode: normal;
+    opacity: 1;
   }
   [data-theme='light'] .hero-photo {
-    filter: grayscale(1) contrast(1.1) brightness(0.85);
-    opacity: 0.28; mix-blend-mode: normal;
+    filter: grayscale(1) contrast(1.15) brightness(0.75);
+    mix-blend-mode: normal;
+    opacity: 0.45;
   }
+  /* Heavy left vignette so text stays readable */
   .hero-photo-vignette {
     background:
-      linear-gradient(to right, var(--bg) 0%, color-mix(in srgb,var(--bg) 75%,transparent) 40%, var(--bg) 100%),
-      linear-gradient(to top, var(--bg) 0%, transparent 52%),
-      linear-gradient(to bottom, var(--bg) 0%, transparent 16%);
+      linear-gradient(to right,
+        var(--bg) 0%,
+        color-mix(in srgb,var(--bg) 82%,transparent) 30%,
+        color-mix(in srgb,var(--bg) 45%,transparent) 55%,
+        transparent 100%
+      ),
+      linear-gradient(to top,
+        var(--bg) 0%,
+        color-mix(in srgb,var(--bg) 40%,transparent) 20%,
+        transparent 45%
+      ),
+      linear-gradient(to bottom, var(--bg) 0%, transparent 15%);
   }
   [data-theme='light'] .hero-photo-vignette {
     background:
-      linear-gradient(to right, var(--bg) 0%, color-mix(in srgb,var(--bg) 80%,transparent) 40%, var(--bg) 100%),
-      linear-gradient(to top, var(--bg) 0%, transparent 52%),
-      linear-gradient(to bottom, var(--bg) 0%, transparent 16%);
+      linear-gradient(to right,
+        var(--bg) 0%,
+        color-mix(in srgb,var(--bg) 85%,transparent) 30%,
+        color-mix(in srgb,var(--bg) 50%,transparent) 55%,
+        transparent 100%
+      ),
+      linear-gradient(to top,
+        var(--bg) 0%,
+        color-mix(in srgb,var(--bg) 45%,transparent) 20%,
+        transparent 45%
+      ),
+      linear-gradient(to bottom, var(--bg) 0%, transparent 15%);
   }
-  .hero-name { white-space: normal; font-size: clamp(44px,12vw,68px); }
+
+  .hero-name { white-space: normal; font-size: clamp(44px,11vw,68px); }
   .hero-sep-hide { display: none; }
   .hero-scroll-hint { display: none; }
   .hero-bg-text { display: none; }
 }
 
-/* ── Small mobile (480px) ── */
+/* ── MOBILE 480px ── */
 @media (max-width: 480px) {
-  .hero-name { font-size: clamp(38px,11vw,56px); }
-  .hero-ctas { flex-direction: column; gap: 10px; }
-  .hero-ctas .btn-primary, .hero-ctas .btn-outline { width: 100%; justify-content: center; }
+  .hero {
+    padding-top: clamp(80px,20vw,110px);
+    padding-left: 20px; padding-right: 20px;
+  }
+  .hero-photo { object-position: 40% 12%; }
+  .hero-name { font-size: clamp(38px,10.5vw,56px); }
+  /* Buttons stack full width on small screens */
+  .hero-ctas { flex-direction: column; gap: 10px; width: 100%; max-width: 320px; }
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-outline { width: 100%; justify-content: center; }
 }
 
-/* ── Tiny (360px) ── */
+/* ── TINY 360px ── */
 @media (max-width: 360px) {
   .hero-name { font-size: 36px; }
 }
