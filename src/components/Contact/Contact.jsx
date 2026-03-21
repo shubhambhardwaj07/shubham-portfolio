@@ -18,7 +18,7 @@ function MapComponent() {
         center: AMRITSAR,
         zoom: 4,
         scrollWheelZoom: false,
-        zoomControl: false,
+        zoomControl: true,
         attributionControl: false,
       })
 
