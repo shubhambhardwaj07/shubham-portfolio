@@ -180,7 +180,6 @@ export default function About() {
           <span className="ab-avail-dot" />
           Available for new opportunities
         </motion.div>
-
       </div>
     </section>
   )
