@@ -15,7 +15,7 @@
 .hero-photo-wrap {
   position: absolute;
   right: 0; top: 0; bottom: 0;
-  width: 52%;
+  width: min(54%, 980px);
   pointer-events: none;
   z-index: 1;
   will-change: transform, opacity;
@@ -32,9 +32,9 @@
 }
 
 [data-theme='light'] .hero-photo {
-  filter: grayscale(1) contrast(1.25) brightness(0.68);
+  filter: grayscale(0.98) contrast(1.04) brightness(0.96);
   mix-blend-mode: normal;
-  opacity: 0.92;
+  opacity: 0.88;
 }
 
 .hero-photo-vignette {
@@ -56,20 +56,20 @@
   background:
     linear-gradient(to right,
       var(--bg) 0%,
-      color-mix(in srgb,var(--bg) 65%,transparent) 14%,
-      color-mix(in srgb,var(--bg) 10%,transparent) 38%,
-      transparent 58%,
-      color-mix(in srgb,var(--bg) 40%,transparent) 82%,
+      color-mix(in srgb,var(--bg) 78%,transparent) 16%,
+      color-mix(in srgb,var(--bg) 34%,transparent) 42%,
+      color-mix(in srgb,var(--bg) 12%,transparent) 60%,
+      color-mix(in srgb,var(--bg) 54%,transparent) 84%,
       var(--bg) 100%
     ),
-    linear-gradient(to top, var(--bg) 0%, color-mix(in srgb,var(--bg) 40%,transparent) 14%, transparent 32%),
-    linear-gradient(to bottom, var(--bg) 0%, transparent 16%);
+    linear-gradient(to top, var(--bg) 0%, color-mix(in srgb,var(--bg) 64%,transparent) 16%, transparent 38%),
+    linear-gradient(to bottom, var(--bg) 0%, color-mix(in srgb,var(--bg) 32%,transparent) 18%, transparent 34%);
 }
 
 /* ── CONTENT ── */
 .hero-content {
   position: relative; z-index: 4;
-  width: 100%; max-width: 52%;
+  width: 100%; max-width: min(52%, 820px);
   will-change: transform, opacity;
 }
 
@@ -115,6 +115,8 @@
   letter-spacing: -0.06em; color: var(--text); opacity: 0.03;
   pointer-events: none; user-select: none; z-index: 2; line-height: 1;
   will-change: transform;
+  max-width: 100vw;
+  overflow: hidden;
 }
 
 .hero-scroll-hint {
@@ -139,8 +141,8 @@
 
 /* ── LARGE DESKTOP 1400px+ ── */
 @media (min-width: 1400px) {
-  .hero-content { max-width: 46%; }
-  .hero-photo-wrap { width: 50%; }
+  .hero-content { max-width: min(47%, 880px); }
+  .hero-photo-wrap { width: min(52%, 1040px); }
 }
 
 /* ── TABLET LANDSCAPE 1024px ── */
@@ -188,9 +190,9 @@
     opacity: 1;
   }
   [data-theme='light'] .hero-photo {
-    filter: grayscale(1) contrast(1.15) brightness(0.75);
+    filter: grayscale(0.98) contrast(1.02) brightness(0.98);
     mix-blend-mode: normal;
-    opacity: 0.45;
+    opacity: 0.48;
   }
   /* Heavy left vignette so text stays readable */
   .hero-photo-vignette {
@@ -212,16 +214,16 @@
     background:
       linear-gradient(to right,
         var(--bg) 0%,
-        color-mix(in srgb,var(--bg) 85%,transparent) 30%,
-        color-mix(in srgb,var(--bg) 50%,transparent) 55%,
-        transparent 100%
+        color-mix(in srgb,var(--bg) 90%,transparent) 30%,
+        color-mix(in srgb,var(--bg) 64%,transparent) 58%,
+        color-mix(in srgb,var(--bg) 24%,transparent) 100%
       ),
       linear-gradient(to top,
         var(--bg) 0%,
-        color-mix(in srgb,var(--bg) 45%,transparent) 20%,
+        color-mix(in srgb,var(--bg) 66%,transparent) 24%,
         transparent 45%
       ),
-      linear-gradient(to bottom, var(--bg) 0%, transparent 15%);
+      linear-gradient(to bottom, var(--bg) 0%, color-mix(in srgb,var(--bg) 32%,transparent) 18%, transparent 34%);
   }
 
   .hero-name { white-space: normal; font-size: clamp(44px,11vw,68px); }

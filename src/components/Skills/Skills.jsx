@@ -102,6 +102,12 @@ const certs = [
   { badge: 'AI-PE',  full: 'AI Prompt Engineering',     year: '2024' },
 ]
 
+const capabilityStats = [
+  { value: '13', label: 'Production skills' },
+  { value: '80%+', label: 'Coverage culture' },
+  { value: '8+', label: 'Teams supported' },
+]
+
 const levelColors = {
   Expert:     'sk-level-expert',
   Advanced:   'sk-level-advanced',
@@ -243,7 +249,7 @@ export default function Skills() {
               animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               transition={{ delay: 0.44, duration: 0.6 }}
             >
-              Senior Consultant UI at Thoughtworks — every technology below
+              Senior Frontend Developer at Thoughtworks — every technology below
               has shipped in production at Goldman Sachs &amp; US Bank.
             </motion.p>
           </div>
@@ -268,6 +274,20 @@ export default function Skills() {
           <span className="sk-legend-item">
             <span className={`sk-level-dot sk-level-certified`} />Certified
           </span>
+        </motion.div>
+
+        <motion.div
+          className="sk-capabilities"
+          initial={{ opacity: 0, y: 18 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+          transition={{ delay: 0.34, duration: 0.62, ease: [0.76,0,0.24,1] }}
+        >
+          {capabilityStats.map((stat) => (
+            <div className="sk-capability" key={stat.label}>
+              <span className="sk-capability-value">{stat.value}</span>
+              <span className="sk-capability-label">{stat.label}</span>
+            </div>
+          ))}
         </motion.div>
 
         {/* ── COLUMN HEADERS ── */}

@@ -61,7 +61,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
         >
-          <span className="hero-role-label">Senior Consultant UI</span>
+          <span className="hero-role-label">Senior Frontend Developer</span>
           <span className="hero-sep">·</span>
           <span className="hero-company">Thoughtworks</span>
           <span className="hero-sep hero-sep-hide">·</span>

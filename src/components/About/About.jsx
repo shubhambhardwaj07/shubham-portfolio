@@ -2,184 +2,159 @@ import { useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import './About.css'
 
-const words = ['Architect.', 'Engineer.', 'Creator.', 'Thinker.']
+const principles = [
+  {
+    label: 'Architecture',
+    title: 'Systems that stay understandable',
+    copy: 'I shape frontends around clear ownership, measured boundaries, and code paths a team can keep evolving after launch.',
+  },
+  {
+    label: 'Delivery',
+    title: 'Momentum without theatrics',
+    copy: 'I like tight feedback loops, deliberate tradeoffs, and small decisions that quietly remove friction for everyone downstream.',
+  },
+  {
+    label: 'Craft',
+    title: 'Interfaces with operational grace',
+    copy: 'The work should feel calm under pressure: accessible, fast, consistent, and easy to reason about when real users depend on it.',
+  },
+]
 
-function SplitText({ text, inView, baseDelay = 0, className }) {
-  return (
-    <span className={className} aria-label={text}>
-      {text.split('').map((char, i) => (
-        <span key={i} className="ab-char-clip" aria-hidden>
-          <motion.span
-            className="ab-char"
-            initial={{ y: '110%' }}
-            animate={inView ? { y: '0%' } : { y: '110%' }}
-            transition={{
-              delay: baseDelay + i * 0.022,
-              duration: 0.65,
-              ease: [0.76, 0, 0.24, 1],
-            }}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </motion.span>
-        </span>
-      ))}
-    </span>
-  )
-}
+const profileStats = [
+  ['7+', 'Years building production software'],
+  ['8+', 'Teams supported through platform work'],
+  ['3', 'Enterprise environments served'],
+]
+
+const links = [
+  ['GitHub', 'https://github.com/shubhambhardwaj07'],
+  ['LinkedIn', 'https://www.linkedin.com/in/shubham-bhardwaj07/'],
+  ['LeetCode', 'https://leetcode.com/u/shubh_bhardwaj07/'],
+]
 
 export default function About() {
-  const ref    = useRef(null)
-  const inView = useInView(ref, { once: false, margin: '-100px' })
+  const sectionRef = useRef(null)
+  const inView = useInView(sectionRef, { once: false, margin: '-80px' })
 
   const { scrollYProgress } = useScroll({
-    target: ref,
+    target: sectionRef,
     offset: ['start end', 'end start'],
   })
 
-  const lineW  = useTransform(scrollYProgress, [0.05, 0.35], ['0%', '100%'])
-  const line2W = useTransform(scrollYProgress, [0.15, 0.55], ['0%', '100%'])
-  const subY   = useTransform(scrollYProgress, [0.1, 0.4], [40, 0])
-  const subOp  = useTransform(scrollYProgress, [0.1, 0.35], [0, 1])
-  const wordX  = useTransform(scrollYProgress, [0.3, 0.8], ['0%', '-35%'])
+  const portraitY = useTransform(scrollYProgress, [0, 1], ['-5%', '7%'])
+  const wordY = useTransform(scrollYProgress, [0, 1], ['7%', '-7%'])
 
   return (
-    <section id="about" className="ab-section" ref={ref}>
+    <section id="about" className="ab-section" ref={sectionRef}>
       <div className="section-grid" />
+      <motion.div className="ab-ghost" style={{ y: wordY }} aria-hidden>
+        Profile
+      </motion.div>
 
       <div className="ab-inner">
+        <div className="ab-top">
+          <motion.div
+            className="section-label"
+            initial={{ opacity: 0, x: -16 }}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
+            transition={{ duration: 0.55 }}
+          >
+            <span className="section-label-num">01</span>
+            <span>About</span>
+          </motion.div>
 
-        {/* ── LABEL ── */}
-        <motion.div className="section-label"
-          initial={{ opacity: 0, x: -16 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-          transition={{ duration: 0.55 }}
-        >
-          <span className="section-label-num">01</span>
-          <span>About</span>
-        </motion.div>
-
-        {/* ── MASSIVE IDENTITY STATEMENT ── */}
-        <div className="ab-hero-text">
-          <div className="ab-line-wrap">
-            <SplitText
-              text="Senior"
-              inView={inView}
-              baseDelay={0.05}
-              className="ab-word ab-word-light"
-            />
-            <SplitText
-              text="Consultant"
-              inView={inView}
-              baseDelay={0.22}
-              className="ab-word ab-word-bold"
-            />
-          </div>
-          <div className="ab-line-wrap">
-            <SplitText
-              text="UI"
-              inView={inView}
-              baseDelay={0.42}
-              className="ab-word ab-word-outlined"
-            />
-            <SplitText
-              text="Engineer"
-              inView={inView}
-              baseDelay={0.54}
-              className="ab-word ab-word-bold"
-            />
-          </div>
+          <motion.div
+            className="ab-intro"
+            initial={{ opacity: 0, y: 18 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+            transition={{ delay: 0.16, duration: 0.68, ease: [0.76, 0, 0.24, 1] }}
+          >
+            <span className="ab-kicker">Frontend developer · UI systems</span>
+            <h2>I build frontends for teams that cannot afford confusion.</h2>
+            <p>
+              My sweet spot is enterprise product engineering: translating messy
+              domains into composed interfaces, durable architecture, and delivery
+              habits that make complex work feel controlled.
+            </p>
+          </motion.div>
         </div>
 
-        {/* ── SCROLL-DRIVEN WIPE LINE ── */}
-        <div className="ab-rule-wrap">
-          <motion.div className="ab-rule" style={{ width: lineW }} />
-        </div>
-
-        {/* ── MIDDLE ROW: paragraph left, scrolling words right ── */}
-        <div className="ab-mid">
-          <motion.div className="ab-para-block" style={{ y: subY, opacity: subOp }}>
-            <p className="ab-para">
-              7 years building the invisible infrastructure
-              that powers Goldman Sachs Transaction Banking.
-              Micro-frontends, performance budgets, design systems
-              at scale — shipped in production across 8+ teams.
-            </p>
-            <p className="ab-para ab-para-2">
-              I care deeply about developer experience,
-              clean architecture, and the craft of writing
-              code that outlasts the engineer who wrote it.
-            </p>
-            <div className="ab-links">
-              {[
-                ['GitHub',   'https://github.com/shubhambhardwaj07'],
-                ['LinkedIn', 'https://www.linkedin.com/in/shubham-bhardwaj07/'],
-                ['LeetCode', 'https://leetcode.com/u/shubh_bhardwaj07/'],
-                ['YouTube',  'https://youtube.com/@TheRebelDiplomat07'],
-              ].map(([label, href]) => (
-                <a key={label} href={href} target="_blank" rel="noreferrer"
-                  className="ab-link" data-hover>
-                  {label}
-                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none"
-                    stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                    <path d="M2 10L10 2M10 2H4M10 2v6"/>
-                  </svg>
-                </a>
-              ))}
+        <div className="ab-showcase">
+          <motion.div
+            className="ab-portrait-card"
+            style={{ y: portraitY }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ delay: 0.22, duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+          >
+            <div className="ab-portrait-frame">
+              <img src="/profile.png" alt="Shubham Bhardwaj" className="ab-portrait" />
+              <div className="ab-portrait-shade" />
+            </div>
+            <div className="ab-status">
+              <span className="ab-status-dot" />
+              Available for meaningful frontend platform work
             </div>
           </motion.div>
 
-          {/* horizontally drifting identity words */}
-          <div className="ab-words-track-wrap" aria-hidden>
-            <motion.div className="ab-words-track" style={{ x: wordX }}>
-              {[...words, ...words].map((w, i) => (
-                <motion.span
-                  key={i}
-                  className="ab-drift-word"
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: i % 2 === 0 ? 1 : 0.22 } : { opacity: 0 }}
-                  transition={{ delay: 0.5 + i * 0.06, duration: 0.6 }}
+          <div className="ab-panel">
+            <motion.div
+              className="ab-statement"
+              initial={{ opacity: 0, y: 22 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
+              transition={{ delay: 0.28, duration: 0.64 }}
+            >
+              <span>Working style</span>
+              <p>
+                I pair consulting clarity with hands-on engineering depth: ask better
+                questions, reduce accidental complexity, then ship the thing with care.
+              </p>
+            </motion.div>
+
+            <div className="ab-principles">
+              {principles.map((item, index) => (
+                <motion.article
+                  className="ab-principle"
+                  key={item.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ delay: 0.36 + index * 0.08, duration: 0.58 }}
                 >
-                  {w}
-                </motion.span>
+                  <span>{item.label}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </motion.article>
               ))}
+            </div>
+
+            <motion.div
+              className="ab-bottom"
+              initial={{ opacity: 0, y: 18 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+              transition={{ delay: 0.56, duration: 0.6 }}
+            >
+              <div className="ab-stats">
+                {profileStats.map(([value, label]) => (
+                  <div className="ab-stat" key={label}>
+                    <span>{value}</span>
+                    <p>{label}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ab-links">
+                {links.map(([label, href]) => (
+                  <a key={label} href={href} target="_blank" rel="noreferrer" className="ab-link" data-hover>
+                    {label}
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                      <path d="M2 10L10 2M10 2H4M10 2v6"/>
+                    </svg>
+                  </a>
+                ))}
+              </div>
             </motion.div>
           </div>
         </div>
-
-        {/* ── SECOND WIPE LINE ── */}
-        <div className="ab-rule-wrap">
-          <motion.div className="ab-rule" style={{ width: line2W }} />
-        </div>
-
-        {/* ── BOTTOM ROW: 4 bold facts ── */}
-        <div className="ab-facts">
-          {[
-            { num: '7+',   label: 'Years',     sub: 'of production engineering' },
-            { num: '3',    label: 'Companies', sub: 'TCS · Publicis · Thoughtworks' },
-            { num: '10+',  label: 'Projects',  sub: 'shipped at enterprise scale' },
-            { num: 'GS',   label: 'Goldman',   sub: 'Sachs Transaction Banking' },
-          ].map((f, i) => (
-            <motion.div key={f.label} className="ab-fact"
-              initial={{ opacity: 0, y: 28 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-              transition={{ delay: 0.45 + i * 0.09, duration: 0.65, ease: [0.76,0,0.24,1] }}
-            >
-              <span className="ab-fact-num">{f.num}</span>
-              <span className="ab-fact-label">{f.label}</span>
-              <span className="ab-fact-sub">{f.sub}</span>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* availability */}
-        <motion.div className="ab-avail"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.85, duration: 0.5 }}
-        >
-          <span className="ab-avail-dot" />
-          Available for new opportunities
-        </motion.div>
       </div>
     </section>
   )

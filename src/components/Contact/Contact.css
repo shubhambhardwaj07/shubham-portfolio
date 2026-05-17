@@ -7,7 +7,7 @@
 .contact-inner {
   position:relative; z-index:1;
   padding:clamp(72px,10vw,128px) clamp(24px,6vw,80px) 0;
-  max-width:1200px; margin:0 auto;
+  max-width:var(--container); margin:0 auto;
 }
 
 .contact-heading {

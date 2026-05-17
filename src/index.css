@@ -11,6 +11,7 @@
   --border-hi:  rgba(255,255,255,0.30);
   --line:       rgba(255,255,255,0.055);
   --overlay:    rgba(212,208,200,0.05);
+  --container:  clamp(1200px,82vw,1680px);
   --font: 'Space Grotesk','Inter',-apple-system,sans-serif;
   --mono: 'JetBrains Mono','Fira Code','Courier New',monospace;
   --ease:  cubic-bezier(0.76,0,0.24,1);

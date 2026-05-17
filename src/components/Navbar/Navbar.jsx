@@ -19,7 +19,7 @@ export default function Navbar() {
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <a href="#hero" className="navbar-logo">
           <span className="navbar-logo-name">SB</span>
-          <span className="navbar-logo-sub">UI Developer</span>
+          <span className="navbar-logo-sub">Developer</span>
         </a>
       </nav>
 

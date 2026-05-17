@@ -2,91 +2,130 @@ import { useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import './YouTube.css'
 
+const editorialPillars = [
+  ['Geopolitics', 'Borderlines, alliances, power shifts, and the decisions behind them.'],
+  ['Current Affairs', 'Fast-moving events translated into clear, watchable context.'],
+  ['Civic Lens', 'A grounded view for people who want signal without performative outrage.'],
+]
+
+const channelStats = [
+  ['220+', 'Published briefings'],
+  ['417', 'Early subscribers'],
+  ['07', 'Rebel signature'],
+]
+
 export default function YouTube() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: false, margin: '-80px' })
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const imgY = useTransform(scrollYProgress, [0, 1], ['-6%', '6%'])
+  const imageY = useTransform(scrollYProgress, [0, 1], ['-5%', '6%'])
+  const markY = useTransform(scrollYProgress, [0, 1], ['8%', '-8%'])
 
   return (
     <section id="youtube" className="youtube" ref={ref}>
       <div className="section-grid" />
-
-      {/* Full-bleed cinematic image with overlay — same bg tone */}
-      <div className="yt-scene">
-        <motion.div className="yt-scene-img-wrap" style={{ y: imgY }}>
-          <img
-            src="/rebel-diplomat-thumb.png"
-            alt=""
-            className="yt-scene-img"
-            aria-hidden
-          />
-        </motion.div>
-        {/* Three-layer overlay to pull it into 2-tone */}
-        <div className="yt-scene-overlay-base" />
-        <div className="yt-scene-overlay-gradient" />
-        <div className="yt-scene-overlay-top" />
-      </div>
+      <motion.div className="yt-bg-type" style={{ y: markY }} aria-hidden>
+        Briefing
+      </motion.div>
 
       <div className="yt-inner">
-        <motion.div
-          className="section-label"
-          initial={{ opacity: 0, x: -16 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-          transition={{ duration: 0.55 }}
-        >
-          <span className="section-label-num">05</span>
-          <span>Beyond Code</span>
-        </motion.div>
+        <div className="yt-top">
+          <motion.div
+            className="section-label"
+            initial={{ opacity: 0, x: -16 }}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
+            transition={{ duration: 0.55 }}
+          >
+            <span className="section-label-num">05</span>
+            <span>Beyond Code</span>
+          </motion.div>
 
-        <div className="yt-body">
-          {/* Left col — all text */}
-          <div className="yt-text">
-            <div style={{ overflow: 'hidden' }}>
-              <motion.h2
-                className="yt-title"
-                initial={{ y: '105%' }}
-                animate={inView ? { y: 0 } : { y: '105%' }}
-                transition={{ delay: 0.15, duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
-              >
-                The Rebel<br />Diplomat
-              </motion.h2>
+          <motion.div
+            className="yt-heading"
+            initial={{ opacity: 0, y: 18 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+            transition={{ delay: 0.14, duration: 0.66, ease: [0.76, 0, 0.24, 1] }}
+          >
+            <span>Independent media desk</span>
+            <h2>The Rebel Diplomat</h2>
+            <p>
+              A sharp, research-led channel for world affairs: built to make complicated
+              events easier to follow without flattening the stakes.
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="yt-stage">
+          <motion.div
+            className="yt-media"
+            style={{ y: imageY }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
+            transition={{ delay: 0.22, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          >
+            <img src="/rebel-diplomat-thumb.png" alt="The Rebel Diplomat channel artwork" className="yt-thumb" />
+            <div className="yt-media-overlay" />
+            <div className="yt-media-caption">
+              <span>Field notes for a noisy world</span>
+              <strong>@TheRebelDiplomat07</strong>
             </div>
+          </motion.div>
 
-            <motion.p
-              className="yt-desc"
-              initial={{ opacity: 0, y: 18 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-              transition={{ delay: 0.42, duration: 0.65 }}
+          <div className="yt-console">
+            <motion.div
+              className="yt-brand-card"
+              initial={{ opacity: 0, y: 22 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
+              transition={{ delay: 0.3, duration: 0.64 }}
             >
-              World affairs, geopolitics and current events —
-              cutting through the noise with sharp perspective and insight.
-            </motion.p>
+              <img src="/rebel-diplomat-logo.jpg" alt="" aria-hidden className="yt-logo" />
+              <div>
+                <span>Channel identity</span>
+                <h3>Calm analysis, decisive framing.</h3>
+              </div>
+            </motion.div>
 
             <motion.div
               className="yt-stats"
               initial={{ opacity: 0, y: 18 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-              transition={{ delay: 0.54, duration: 0.65 }}
+              transition={{ delay: 0.38, duration: 0.62 }}
             >
-              {[['220+', 'Videos'], ['417', 'Subscribers'], ['∞', 'Growing']].map(([n, l], i) => (
-                <div key={l} style={{ display: 'contents' }}>
-                  {i > 0 && <div className="yt-stat-div" />}
-                  <div className="yt-stat">
-                    <span className="yt-stat-num">{n}</span>
-                    <span className="yt-stat-label">{l}</span>
-                  </div>
+              {channelStats.map(([value, label]) => (
+                <div className="yt-stat" key={label}>
+                  <span>{value}</span>
+                  <p>{label}</p>
                 </div>
               ))}
             </motion.div>
 
+            <div className="yt-pillars">
+              {editorialPillars.map(([title, copy], index) => (
+                <motion.article
+                  className="yt-pillar"
+                  key={title}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                  transition={{ delay: 0.46 + index * 0.08, duration: 0.56 }}
+                >
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h4>{title}</h4>
+                    <p>{copy}</p>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+
             <motion.a
               href="https://youtube.com/@TheRebelDiplomat07"
-              target="_blank" rel="noreferrer"
-              className="yt-cta btn-primary" data-hover
+              target="_blank"
+              rel="noreferrer"
+              className="yt-cta btn-primary"
+              data-hover
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ delay: 0.72 }}
+              transition={{ delay: 0.74 }}
             >
               Visit Channel
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -94,20 +133,6 @@ export default function YouTube() {
               </svg>
             </motion.a>
           </div>
-
-          {/* Right col — channel handle + logo mark */}
-          <motion.div
-            className="yt-right"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.6, duration: 1 }}
-          >
-            <div className="yt-handle">@TheRebelDiplomat07</div>
-            <div className="yt-channel-meta">
-              <span>YouTube · World Affairs</span>
-              <span>Geopolitics · Current Events</span>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>
