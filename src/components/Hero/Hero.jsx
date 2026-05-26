@@ -37,7 +37,7 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
         >
           <span className="hero-status-dot" />
-          <span>Available for opportunities</span>
+          <span>Available for selective frontend work</span>
         </motion.div>
 
         <div className="hero-name-wrap">
@@ -93,7 +93,7 @@ export default function Hero() {
         className="hero-bg-text"
         style={{ y: yBgText }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.03 }}
+        animate={{ opacity: 0.024 }}
         transition={{ delay: 0.4, duration: 1.2 }}
       >
         SB

@@ -7,7 +7,7 @@ const links = [
   { name: 'Home',       href: '#hero' },
   { name: 'About',      href: '#about' },
   { name: 'Skills',     href: '#skills' },
-  { name: 'Projects',   href: '#projects' },
+  { name: 'Work',       href: '#projects' },
   { name: 'Experience', href: '#experience' },
   { name: 'YouTube',    href: '#youtube' },
   { name: 'Contact',    href: '#contact' },
@@ -20,12 +20,17 @@ export default function Hamburger() {
     const next = val !== undefined ? val : !open
     setOpen(next)
     document.body.style.overflow = next ? 'hidden' : ''
+    document.body.classList.toggle('menu-open', next)
   }
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') toggle(false) }
     window.addEventListener('keydown', onKey)
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+      document.body.classList.remove('menu-open')
+    }
   }, [])
 
   const handleNav = (e, href) => {

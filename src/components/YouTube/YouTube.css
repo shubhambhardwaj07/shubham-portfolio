@@ -2,7 +2,7 @@
 
 .youtube {
   position: relative;
-  padding: clamp(76px,10vw,152px) clamp(20px,6vw,80px);
+  padding: var(--section-pad-y) var(--section-pad-x);
   border-top: 1px solid var(--border);
   overflow: hidden;
 }
@@ -24,7 +24,7 @@
   letter-spacing: -0.06em;
   line-height: 1;
   color: var(--text);
-  opacity: 0.024;
+  opacity: 0.018;
   pointer-events: none;
   user-select: none;
   z-index: 0;
@@ -81,30 +81,37 @@
   min-height: clamp(470px,58vw,720px);
   border: 1px solid var(--border-mid);
   overflow: hidden;
-  background: var(--bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(145deg, color-mix(in srgb,var(--bg-2) 88%,var(--text) 12%), var(--bg) 72%),
+    var(--bg-2);
 }
 
 .yt-thumb {
   width: 100%;
   height: 100%;
   min-height: clamp(470px,58vw,720px);
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
-  filter: grayscale(1) contrast(0.95) brightness(0.58);
-  transform: scale(1.03);
+  padding: clamp(34px,5vw,76px);
+  filter: grayscale(1) contrast(1.05) brightness(0.82);
+  opacity: 0.88;
+  transform: scale(0.98);
 }
 
 [data-theme='light'] .yt-thumb {
-  filter: grayscale(1) contrast(0.9) brightness(0.92);
-  opacity: 0.74;
+  filter: grayscale(0.96) contrast(1.02) brightness(1);
+  opacity: 0.9;
 }
 
 .yt-media-overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, color-mix(in srgb,var(--bg) 10%,transparent), color-mix(in srgb,var(--bg) 78%,transparent)),
-    linear-gradient(to right, color-mix(in srgb,var(--bg) 72%,transparent), transparent 52%, color-mix(in srgb,var(--bg) 28%,transparent));
+    linear-gradient(to bottom, color-mix(in srgb,var(--bg) 4%,transparent), color-mix(in srgb,var(--bg) 58%,transparent)),
+    linear-gradient(to right, color-mix(in srgb,var(--bg) 58%,transparent), transparent 54%, color-mix(in srgb,var(--bg) 22%,transparent));
 }
 
 .yt-media::before,
@@ -174,12 +181,18 @@
     color-mix(in srgb,var(--bg) 92%,transparent);
 }
 
-.yt-logo {
+.yt-logo-mark {
   width: clamp(68px,8vw,98px);
   aspect-ratio: 1;
-  object-fit: cover;
   border: 1px solid var(--border-mid);
-  filter: grayscale(1) contrast(1.08) brightness(0.78);
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: clamp(20px,2.5vw,34px);
+  letter-spacing: -0.08em;
+  color: var(--bg);
+  background: var(--text);
+  box-shadow: inset 0 0 0 8px color-mix(in srgb,var(--bg) 8%,transparent);
 }
 
 .yt-brand-card h3 {
@@ -272,7 +285,12 @@
 
   .yt-media,
   .yt-thumb {
-    min-height: clamp(360px,70vw,560px);
+    min-height: clamp(340px,70vw,520px);
+  }
+
+  .yt-top {
+    gap: clamp(18px,5vw,38px);
+    margin-bottom: clamp(32px,8vw,58px);
   }
 }
 
@@ -284,6 +302,44 @@
 }
 
 @media (max-width: 560px) {
+  .youtube {
+    padding-top: clamp(68px,18vw,92px);
+    padding-bottom: clamp(68px,18vw,92px);
+  }
+
+  .yt-heading h2 {
+    font-size: clamp(38px,12.5vw,58px);
+    line-height: 0.94;
+    letter-spacing: -0.045em;
+  }
+
+  .yt-heading p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .yt-media,
+  .yt-thumb {
+    min-height: clamp(300px,84vw,430px);
+  }
+
+  .yt-thumb {
+    padding: clamp(22px,9vw,42px);
+  }
+
+  .yt-brand-card {
+    grid-template-columns: 56px minmax(0,1fr);
+    padding: 20px;
+  }
+
+  .yt-logo-mark {
+    width: 56px;
+  }
+
+  .yt-brand-card h3 {
+    font-size: clamp(22px,7vw,30px);
+  }
+
   .yt-stats {
     grid-template-columns: 1fr;
   }
@@ -301,6 +357,7 @@
   .yt-media-caption {
     align-items: flex-start;
     flex-direction: column;
+    gap: 8px;
   }
 
   .yt-media-caption strong {
@@ -309,5 +366,9 @@
 
   .yt-bg-type {
     display: none;
+  }
+
+  .yt-pillar {
+    grid-template-columns: 34px minmax(0,1fr);
   }
 }

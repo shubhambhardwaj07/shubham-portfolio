@@ -10,7 +10,7 @@ const chapters = [
     period: 'Nov 2023 — Present',
     status: 'Current company',
     headline: 'Consulting craft, platform thinking, and senior ownership.',
-    summary: 'I work at the intersection of product engineering and consulting: shaping front-end systems, aligning with stakeholders, and keeping delivery clear for distributed teams.',
+    summary: 'I work at the intersection of product engineering and consulting: shaping frontend systems, aligning with stakeholders, and keeping delivery clear for distributed teams.',
     details: ['Micro-frontend architecture', 'TDD-led delivery', 'Stakeholder collaboration'],
     metric: 'Current',
   },
@@ -78,7 +78,7 @@ export default function Experience() {
             transition={{ delay: 0.14, duration: 0.62 }}
           >
             <p>Employer journey</p>
-            <h2>Three companies. One front-end craft, sharpened over time.</h2>
+            <h2>Three companies. One frontend craft, sharpened over time.</h2>
           </motion.div>
         </div>
 

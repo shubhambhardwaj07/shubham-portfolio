@@ -249,8 +249,8 @@ export default function Skills() {
               animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               transition={{ delay: 0.44, duration: 0.6 }}
             >
-              Senior Frontend Developer at Thoughtworks — every technology below
-              has shipped in production at Goldman Sachs &amp; US Bank.
+              A production toolkit shaped by enterprise banking platforms,
+              shared UI systems, and delivery across distributed teams.
             </motion.p>
           </div>
         </div>

@@ -5,18 +5,18 @@ import './About.css'
 const principles = [
   {
     label: 'Architecture',
-    title: 'Systems that stay understandable',
-    copy: 'I shape frontends around clear ownership, measured boundaries, and code paths a team can keep evolving after launch.',
+    title: 'Systems with a long shelf life',
+    copy: 'I shape frontends around ownership, boundaries, and code paths a team can keep evolving with confidence.',
   },
   {
     label: 'Delivery',
-    title: 'Momentum without theatrics',
-    copy: 'I like tight feedback loops, deliberate tradeoffs, and small decisions that quietly remove friction for everyone downstream.',
+    title: 'Delivery without noise',
+    copy: 'I prefer tight feedback loops, deliberate tradeoffs, and decisions that remove friction before it becomes visible.',
   },
   {
     label: 'Craft',
-    title: 'Interfaces with operational grace',
-    copy: 'The work should feel calm under pressure: accessible, fast, consistent, and easy to reason about when real users depend on it.',
+    title: 'Interfaces that stay calm',
+    copy: 'The experience should remain accessible, fast, and predictable when real users and real workflows depend on it.',
   },
 ]
 
@@ -70,11 +70,11 @@ export default function About() {
             transition={{ delay: 0.16, duration: 0.68, ease: [0.76, 0, 0.24, 1] }}
           >
             <span className="ab-kicker">Frontend developer · UI systems</span>
-            <h2>I build frontends for teams that cannot afford confusion.</h2>
+            <h2>I build frontend systems that make complex work feel clear.</h2>
             <p>
-              My sweet spot is enterprise product engineering: translating messy
+              My sweet spot is enterprise product engineering: translating layered
               domains into composed interfaces, durable architecture, and delivery
-              habits that make complex work feel controlled.
+              habits that help teams move with confidence.
             </p>
           </motion.div>
         </div>
@@ -106,8 +106,8 @@ export default function About() {
             >
               <span>Working style</span>
               <p>
-                I pair consulting clarity with hands-on engineering depth: ask better
-                questions, reduce accidental complexity, then ship the thing with care.
+                I pair consulting clarity with hands-on engineering depth: ask sharper
+                questions, reduce accidental complexity, and ship with restraint.
               </p>
             </motion.div>
 

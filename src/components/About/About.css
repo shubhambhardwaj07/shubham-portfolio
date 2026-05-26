@@ -2,7 +2,7 @@
 
 .ab-section {
   position: relative;
-  padding: clamp(72px,10vw,150px) clamp(20px,6vw,80px);
+  padding: var(--section-pad-y) var(--section-pad-x);
   border-top: 1px solid var(--border);
   overflow: hidden;
 }
@@ -23,7 +23,7 @@
   letter-spacing: -0.06em;
   line-height: 1;
   color: var(--text);
-  opacity: 0.024;
+  opacity: 0.018;
   pointer-events: none;
   user-select: none;
   z-index: 0;
@@ -103,14 +103,14 @@
   min-height: clamp(300px,38vw,470px);
   object-fit: cover;
   object-position: center top;
-  filter: grayscale(1) contrast(1.14) brightness(0.62);
+  filter: grayscale(1) contrast(1.08) brightness(0.66);
   mix-blend-mode: luminosity;
 }
 
 [data-theme='light'] .ab-portrait {
-  filter: grayscale(1) contrast(1.05) brightness(0.82);
+  filter: grayscale(0.96) contrast(1.02) brightness(0.94);
   mix-blend-mode: multiply;
-  opacity: 0.72;
+  opacity: 0.64;
 }
 
 .ab-portrait-shade {
@@ -182,7 +182,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: background 0.25s ease, border-color 0.25s ease;
+  transition: background 0.38s var(--ease-premium), border-color 0.38s var(--ease-premium), transform 0.38s var(--ease-premium);
 }
 
 .ab-principle:last-child {
@@ -191,6 +191,7 @@
 
 .ab-principle:hover {
   background: var(--overlay);
+  transform: translateY(-2px);
 }
 
 .ab-principle h3 {

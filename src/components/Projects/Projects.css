@@ -2,7 +2,7 @@
 
 .projects {
   position: relative;
-  padding: clamp(76px,10vw,156px) clamp(20px,6vw,80px);
+  padding: var(--section-pad-y) var(--section-pad-x);
   border-top: 1px solid var(--border);
   overflow: hidden;
 }
@@ -23,7 +23,7 @@
   letter-spacing: -0.06em;
   line-height: 1;
   color: var(--text);
-  opacity: 0.024;
+  opacity: 0.018;
   pointer-events: none;
   user-select: none;
   z-index: 0;
@@ -198,7 +198,7 @@
   justify-content: space-between;
   position: relative;
   overflow: hidden;
-  transition: background 0.25s ease, transform 0.25s ease;
+  transition: background 0.4s var(--ease-premium), transform 0.4s var(--ease-premium);
 }
 
 .work-card::before {
@@ -226,6 +226,10 @@
   background:
     linear-gradient(145deg, var(--overlay), transparent 62%),
     var(--bg);
+}
+
+.work-card:hover {
+  transform: translateY(-3px);
 }
 
 .work-card-active::before,

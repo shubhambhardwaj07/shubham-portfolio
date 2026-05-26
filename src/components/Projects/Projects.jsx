@@ -9,8 +9,8 @@ const work = [
     client: 'GS',
     clientName: 'Goldman Sachs',
     domain: 'Transaction banking',
-    title: 'A banking platform shaped for independent teams.',
-    summary: 'Working as a Senior Frontend Developer at Thoughtworks, I contribute to enterprise systems where architecture, delivery discipline, and stakeholder clarity matter every day.',
+    title: 'Platform work for independent banking teams.',
+    summary: 'At Thoughtworks, I contribute to enterprise systems where architecture, delivery discipline, and stakeholder clarity matter every day.',
     highlights: ['Micro-frontends', 'TDD delivery', 'Platform thinking'],
   },
   {
@@ -19,8 +19,8 @@ const work = [
     client: 'USBC',
     clientName: 'US Bank Corp',
     domain: 'Partner management',
-    title: 'Operational dashboards built for controlled access and scale.',
-    summary: 'At Publicis Sapient, I worked on banking interfaces involving accounts, configuration flows, role-based access, versioning, and performance-minded frontend delivery.',
+    title: 'Controlled banking workflows with clean operational surfaces.',
+    summary: 'At Publicis Sapient, I worked on accounts, configuration flows, role-based access, versioning, and performance-minded frontend delivery.',
     highlights: ['RBAC', 'Dashboards', 'Responsive frontend'],
   },
   {
@@ -29,8 +29,8 @@ const work = [
     client: 'J&J',
     clientName: 'Johnson & Johnson',
     domain: 'Enterprise applications',
-    title: 'The foundation chapter: structured frontend delivery as a fresher.',
-    summary: 'At TCS, I learned production discipline on Johnson & Johnson work: building reliable interface pieces, handling forms and documents, and getting the details right.',
+    title: 'Foundational enterprise delivery with detail discipline.',
+    summary: 'At TCS, I learned production habits on Johnson & Johnson work: building reliable interface pieces, handling forms and documents, and getting the details right.',
     highlights: ['Forms', 'PDF workflows', 'Cross-browser frontend'],
   },
 ]
@@ -69,10 +69,10 @@ export default function Projects() {
             transition={{ delay: 0.16, duration: 0.62, ease: [0.76, 0, 0.24, 1] }}
           >
             <p className="projects-eyebrow">Client map</p>
-            <h2>Enterprise work across consulting chapters.</h2>
+            <h2>Client work, translated into durable systems.</h2>
             <p>
-              Three employers, three client environments, one consistent thread:
-              turning complex business workflows into dependable frontend systems.
+              A concise map of the environments I have served, and the kind of
+              frontend problems each chapter asked me to solve.
             </p>
           </motion.div>
         </div>

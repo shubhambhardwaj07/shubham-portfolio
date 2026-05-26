@@ -63,7 +63,7 @@ export default function YouTube() {
             animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
             transition={{ delay: 0.22, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
           >
-            <img src="/rebel-diplomat-thumb.png" alt="The Rebel Diplomat channel artwork" className="yt-thumb" />
+            <img src="/rebel-diplomat-logo.jpg" alt="The Rebel Diplomat channel logo" className="yt-thumb" />
             <div className="yt-media-overlay" />
             <div className="yt-media-caption">
               <span>Field notes for a noisy world</span>
@@ -78,7 +78,7 @@ export default function YouTube() {
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
               transition={{ delay: 0.3, duration: 0.64 }}
             >
-              <img src="/rebel-diplomat-logo.jpg" alt="" aria-hidden className="yt-logo" />
+              <div className="yt-logo-mark" aria-hidden>RD</div>
               <div>
                 <span>Channel identity</span>
                 <h3>Calm analysis, decisive framing.</h3>

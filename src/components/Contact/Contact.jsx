@@ -77,14 +77,44 @@ export default function Contact() {
   const inView = useInView(ref, { once: false, margin: '-80px' })
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSent(true)
-    setTimeout(() => {
-      setSent(false)
-      setForm({ name: '', email: '', message: '' })
-    }, 3500)
+    setSending(true)
+
+    const payload = {
+      name: form.name,
+      email: form.email,
+      message: form.message,
+      _subject: `Portfolio enquiry from ${form.name}`,
+      _template: 'table',
+      _captcha: 'false',
+    }
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/Shubham998845@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!res.ok) throw new Error('Form service unavailable')
+      setSent(true)
+      setTimeout(() => {
+        setSent(false)
+        setForm({ name: '', email: '', message: '' })
+      }, 3500)
+    } catch {
+      const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`)
+      const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)
+      window.location.href = `mailto:Shubham998845@gmail.com?subject=${subject}&body=${body}`
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -112,92 +142,93 @@ export default function Contact() {
           </motion.h2>
         </div>
 
-        <div className="contact-body">
-          <motion.div
-            className="contact-map-wrap"
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ delay: 0.28, duration: 0.75 }}
-          >
-            <MapComponent />
-            <div className="contact-map-label">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-              </svg>
-              Amritsar, India
-            </div>
-          </motion.div>
+      </div>
 
-          <motion.div
-            className="contact-form-wrap"
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ delay: 0.38, duration: 0.75 }}
-          >
-            {sent ? (
-              <motion.div
-                className="contact-success"
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
-              >
-                <div className="contact-success-icon">✓</div>
-                <p>Message sent!<br />I'll get back to you soon.</p>
-              </motion.div>
-            ) : (
-              <form className="contact-form" onSubmit={handleSubmit}>
-                {[
-                  { key: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
-                  { key: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
-                ].map(({ key, label, type, placeholder }) => (
-                  <div key={key} className="form-field">
-                    <label className="form-label">{label}</label>
-                    <input
-                      className="form-input" type={type} required
-                      placeholder={placeholder}
-                      value={form[key]}
-                      onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                    />
-                  </div>
-                ))}
-                <div className="form-field">
-                  <label className="form-label">Message</label>
-                  <textarea
-                    className="form-textarea" required rows={5}
-                    placeholder="Tell me about your project..."
-                    value={form.message}
-                    onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+      <div className="contact-body">
+        <motion.div
+          className="contact-map-wrap"
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ delay: 0.28, duration: 0.75 }}
+        >
+          <MapComponent />
+          <div className="contact-map-label">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            Amritsar, India
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="contact-form-wrap"
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ delay: 0.38, duration: 0.75 }}
+        >
+          {sent ? (
+            <motion.div
+              className="contact-success"
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="contact-success-icon">✓</div>
+              <p>Message sent!<br />I'll get back to you soon.</p>
+            </motion.div>
+          ) : (
+            <form className="contact-form" onSubmit={handleSubmit}>
+              {[
+                { key: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
+                { key: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
+              ].map(({ key, label, type, placeholder }) => (
+                <div key={key} className="form-field">
+                  <label className="form-label">{label}</label>
+                  <input
+                    className="form-input" type={type} required
+                    placeholder={placeholder}
+                    value={form[key]}
+                    onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                   />
                 </div>
-                <button className="form-submit" type="submit" data-hover>
-                  Send Message
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <line x1="22" y1="2" x2="11" y2="13"/>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                  </svg>
-                </button>
-              </form>
-            )}
-
-            <div className="contact-info">
-              {[
-                { label: 'Email', text: 'Shubham998845@gmail.com', href: 'mailto:Shubham998845@gmail.com' },
-                { label: 'GitHub', text: 'shubhambhardwaj07', href: 'https://github.com/shubhambhardwaj07' },
-                { label: 'LinkedIn', text: 'shubham-bhardwaj07', href: 'https://www.linkedin.com/in/shubham-bhardwaj07/' },
-              ].map(({ label, text, href }) => (
-                <a key={label} href={href} target="_blank" rel="noreferrer"
-                  className="contact-info-item" data-hover>
-                  <span className="contact-info-label">{label}</span>
-                  <span>{text}</span>
-                </a>
               ))}
-            </div>
-          </motion.div>
-        </div>
+              <div className="form-field">
+                <label className="form-label">Message</label>
+                <textarea
+                  className="form-textarea" required rows={5}
+                  placeholder="Tell me about your project..."
+                  value={form.message}
+                  onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                />
+              </div>
+              <button className="form-submit" type="submit" data-hover disabled={sending}>
+                {sending ? 'Sending...' : 'Send Message'}
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </form>
+          )}
+
+          <div className="contact-info">
+            {[
+              { label: 'Email', text: 'Shubham998845@gmail.com', href: 'mailto:Shubham998845@gmail.com' },
+              { label: 'GitHub', text: 'shubhambhardwaj07', href: 'https://github.com/shubhambhardwaj07' },
+              { label: 'LinkedIn', text: 'shubham-bhardwaj07', href: 'https://www.linkedin.com/in/shubham-bhardwaj07/' },
+            ].map(({ label, text, href }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer"
+                className="contact-info-item" data-hover>
+                <span className="contact-info-label">{label}</span>
+                <span>{text}</span>
+              </a>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
       <div className="contact-footer">
-        <span>© 2025 Shubham Bhardwaj</span>
+        <span>© 2026 Shubham Bhardwaj</span>
         <span>Senior Frontend Developer</span>
       </div>
     </section>

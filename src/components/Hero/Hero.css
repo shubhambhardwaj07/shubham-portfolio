@@ -3,7 +3,7 @@
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: clamp(100px,14vw,140px) clamp(20px,6vw,80px) clamp(64px,8vw,100px);
+  padding: clamp(104px,13vw,156px) var(--section-pad-x) clamp(72px,8vw,112px);
   overflow: hidden;
   background: var(--bg);
 }
@@ -19,6 +19,7 @@
   pointer-events: none;
   z-index: 1;
   will-change: transform, opacity;
+  overflow: hidden;
 }
 
 .hero-photo {
@@ -29,12 +30,15 @@
   display: block;
   filter: grayscale(1) contrast(1.1) brightness(0.6);
   mix-blend-mode: luminosity;
+  transform: scale(1.015);
 }
 
 [data-theme='light'] .hero-photo {
-  filter: grayscale(0.98) contrast(1.04) brightness(0.96);
+  filter: grayscale(0.94) contrast(1.08) brightness(0.93);
   mix-blend-mode: normal;
-  opacity: 0.88;
+  opacity: 0.9;
+  transform: scale(1.075) translateX(3%);
+  object-position: 38% top;
 }
 
 .hero-photo-vignette {
@@ -56,12 +60,14 @@
   background:
     linear-gradient(to right,
       var(--bg) 0%,
-      color-mix(in srgb,var(--bg) 78%,transparent) 16%,
-      color-mix(in srgb,var(--bg) 34%,transparent) 42%,
+      var(--bg) 5%,
+      color-mix(in srgb,var(--bg) 92%,transparent) 16%,
+      color-mix(in srgb,var(--bg) 46%,transparent) 42%,
       color-mix(in srgb,var(--bg) 12%,transparent) 60%,
       color-mix(in srgb,var(--bg) 54%,transparent) 84%,
       var(--bg) 100%
     ),
+    linear-gradient(to right, var(--bg) 0%, color-mix(in srgb,var(--bg) 82%,transparent) 10%, transparent 28%),
     linear-gradient(to top, var(--bg) 0%, color-mix(in srgb,var(--bg) 64%,transparent) 16%, transparent 38%),
     linear-gradient(to bottom, var(--bg) 0%, color-mix(in srgb,var(--bg) 32%,transparent) 18%, transparent 34%);
 }
@@ -92,7 +98,7 @@
 .hero-name-line { overflow: hidden; line-height: 1; }
 .hero-name {
   display: block;
-  font-size: clamp(48px,7.5vw,112px);
+  font-size: clamp(48px,7.2vw,124px);
   font-weight: 700; color: var(--text);
   letter-spacing: -0.04em; line-height: 0.96;
   will-change: transform;
@@ -110,9 +116,9 @@
 .hero-ctas       { display: flex; gap: clamp(10px,1.5vw,14px); flex-wrap: wrap; }
 
 .hero-bg-text {
-  position: absolute; right: -2vw; bottom: -4vw;
+  position: absolute; right: -1vw; bottom: -4vw;
   font-size: clamp(100px,20vw,280px); font-weight: 900;
-  letter-spacing: -0.06em; color: var(--text); opacity: 0.03;
+  letter-spacing: -0.06em; color: var(--text); opacity: 0.024;
   pointer-events: none; user-select: none; z-index: 2; line-height: 1;
   will-change: transform;
   max-width: 100vw;
@@ -143,6 +149,13 @@
 @media (min-width: 1400px) {
   .hero-content { max-width: min(47%, 880px); }
   .hero-photo-wrap { width: min(52%, 1040px); }
+}
+
+@media (min-width: 1800px) {
+  .hero-content { max-width: 840px; }
+  .hero-photo-wrap { width: min(50%, 1120px); }
+  .hero-name { font-size: clamp(98px,6.4vw,132px); }
+  [data-theme='light'] .hero-photo { transform: scale(1.06) translateX(2%); }
 }
 
 /* ── TABLET LANDSCAPE 1024px ── */
@@ -190,9 +203,11 @@
     opacity: 1;
   }
   [data-theme='light'] .hero-photo {
-    filter: grayscale(0.98) contrast(1.02) brightness(0.98);
+    filter: grayscale(0.94) contrast(1.06) brightness(0.96);
     mix-blend-mode: normal;
-    opacity: 0.48;
+    opacity: 0.54;
+    transform: scale(1.04);
+    object-position: 82% 15%;
   }
   /* Heavy left vignette so text stays readable */
   .hero-photo-vignette {

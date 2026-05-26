@@ -2,7 +2,7 @@
 
 .experience {
   position: relative;
-  padding: clamp(76px,10vw,156px) clamp(20px,6vw,80px);
+  padding: var(--section-pad-y) var(--section-pad-x);
   border-top: 1px solid var(--border);
   overflow: hidden;
 }
@@ -23,7 +23,7 @@
   letter-spacing: -0.06em;
   line-height: 1;
   color: var(--text);
-  opacity: 0.024;
+  opacity: 0.018;
   pointer-events: none;
   user-select: none;
   z-index: 0;
@@ -263,7 +263,7 @@
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg) 90%, transparent);
   padding: clamp(20px,3vw,34px);
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  transition: border-color 0.4s var(--ease-premium), background 0.4s var(--ease-premium), transform 0.4s var(--ease-premium);
 }
 
 .exp-chapter-active .exp-card,
