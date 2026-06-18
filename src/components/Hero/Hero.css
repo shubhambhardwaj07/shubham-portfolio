@@ -26,19 +26,19 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 30% top;
+  object-position: 28% top;
   display: block;
-  filter: grayscale(1) contrast(1.1) brightness(0.6);
+  filter: grayscale(1) contrast(1.08) brightness(0.62);
   mix-blend-mode: luminosity;
-  transform: scale(1.015);
+  transform: scale(1.02);
+  transition: filter 0.65s ease, opacity 0.65s ease;
 }
 
+/* Light: multiply blend = editorial photo integration — zero jump on theme switch */
 [data-theme='light'] .hero-photo {
-  filter: grayscale(0.94) contrast(1.08) brightness(0.93);
-  mix-blend-mode: normal;
-  opacity: 0.9;
-  transform: scale(1.075) translateX(3%);
-  object-position: 38% top;
+  filter: grayscale(0.9) contrast(1.18) brightness(1.12);
+  mix-blend-mode: multiply;
+  opacity: 0.82;
 }
 
 .hero-photo-vignette {
@@ -155,7 +155,7 @@
   .hero-content { max-width: 840px; }
   .hero-photo-wrap { width: min(50%, 1120px); }
   .hero-name { font-size: clamp(98px,6.4vw,132px); }
-  [data-theme='light'] .hero-photo { transform: scale(1.06) translateX(2%); }
+  /* No transform override in light — keeps theme-switch smooth */
 }
 
 /* ── TABLET LANDSCAPE 1024px ── */
@@ -193,21 +193,17 @@
     opacity: 1; /* don't fade the whole wrap */
   }
   .hero-photo {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    /* Position face to the right side */
-    object-position: 85% 15%;
-    /* Visible but not overwhelming */
-    filter: grayscale(1) contrast(1.05) brightness(0.5);
+    /* Center the face — same focal point as desktop but full-screen */
+    object-position: 38% 10%;
+    filter: grayscale(1) contrast(1.05) brightness(0.48);
     mix-blend-mode: normal;
     opacity: 1;
+    transform: scale(1.02);
   }
   [data-theme='light'] .hero-photo {
-    filter: grayscale(0.94) contrast(1.06) brightness(0.96);
+    filter: grayscale(0.88) contrast(1.1) brightness(0.95);
     mix-blend-mode: normal;
-    opacity: 0.54;
-    transform: scale(1.04);
-    object-position: 82% 15%;
+    opacity: 0.55;
   }
   /* Heavy left vignette so text stays readable */
   .hero-photo-vignette {
@@ -245,16 +241,20 @@
   .hero-sep-hide { display: none; }
   .hero-scroll-hint { display: none; }
   .hero-bg-text { display: none; }
+  /* Disable parallax on mobile — prevents photo shift on scroll */
+  .hero-photo-wrap { will-change: auto; transform: none !important; }
 }
 
 /* ── MOBILE 480px ── */
 @media (max-width: 480px) {
   .hero {
-    padding-top: clamp(80px,20vw,110px);
-    padding-left: 20px; padding-right: 20px;
+    padding-top: clamp(88px,22vw,116px);
+    padding-left: 22px; padding-right: 22px;
+    padding-bottom: clamp(72px,16vw,100px);
   }
-  .hero-photo { object-position: 40% 12%; }
-  .hero-name { font-size: clamp(38px,10.5vw,56px); }
+  .hero-photo { object-position: 40% 10%; }
+  .hero-name { font-size: clamp(40px,11vw,58px); }
+  .hero-meta { margin-bottom: clamp(20px,6vw,36px); }
   /* Buttons stack full width on small screens */
   .hero-ctas { flex-direction: column; gap: 10px; width: 100%; max-width: 320px; }
   .hero-ctas .btn-primary,

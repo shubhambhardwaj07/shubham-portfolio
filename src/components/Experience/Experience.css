@@ -51,9 +51,9 @@
   font-weight: 700;
 }
 
-.exp-heading h2 {
+.exp-heading-h2 {
   font-size: clamp(36px,5.8vw,78px);
-  line-height: 0.97;
+  line-height: 1.05;
   letter-spacing: -0.05em;
   color: var(--text);
   max-width: 860px;
@@ -376,6 +376,12 @@
 }
 
 @media (max-width: 640px) {
+  .exp-heading-h2 {
+    font-size: clamp(30px,9vw,48px);
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+  }
+
   .exp-card-head {
     flex-direction: column;
   }
@@ -389,6 +395,10 @@
   .exp-chapter:hover .exp-card,
   .exp-chapter-active .exp-card {
     transform: none;
+  }
+
+  .exp-top {
+    margin-bottom: clamp(28px,9vw,48px);
   }
 }
 

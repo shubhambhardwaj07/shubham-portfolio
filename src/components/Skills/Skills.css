@@ -267,16 +267,22 @@
   .sk-certs { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-  .sk-col-head { grid-template-columns: 28px 1fr; }
+  .sk-top { gap: 20px; margin-bottom: clamp(28px,9vw,44px); }
+  .sk-headline { font-size: clamp(28px,8.5vw,44px); }
+  .sk-sub { font-size: 14px; line-height: 1.7; }
+  .sk-col-head { grid-template-columns: 26px 1fr; }
   .sk-col-head span:nth-child(3),
   .sk-col-head span:nth-child(4),
   .sk-col-head span:nth-child(5) { display: none; }
-  .sk-row { grid-template-columns: 28px 1fr; }
+  .sk-row { grid-template-columns: 26px 1fr; padding: 16px 0; }
   .sk-row-tag   { display: none; }
   .sk-row-years { display: none; }
   .sk-row-level { display: none; }
-  .sk-row-name  { font-size: clamp(15px,5vw,22px); }
-  .sk-row-context { -webkit-line-clamp: 2; }
+  .sk-row-name  { font-size: clamp(16px,5vw,24px); }
+  .sk-row-context { font-size: 13px; line-height: 1.55; -webkit-line-clamp: 2; }
+  .sk-capability-value { font-size: clamp(24px,7vw,40px); }
   .sk-bg-word   { display: none; }
   .sk-legend    { display: none; }
+  .sk-certs { grid-template-columns: 1fr; }
+  .sk-cert { padding: 16px 14px; }
 }

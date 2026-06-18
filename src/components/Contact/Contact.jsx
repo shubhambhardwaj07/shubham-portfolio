@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
+import SplitHeading from '../../utils/SplitHeading'
 import './Contact.css'
 
 function MapComponent() {
@@ -74,7 +75,7 @@ function MapComponent() {
 
 export default function Contact() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: false, margin: '-80px' })
+  const inView = useInView(ref, { once: true })
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
@@ -131,15 +132,14 @@ export default function Contact() {
           <span>Contact</span>
         </motion.div>
 
-        <div style={{ overflow: 'hidden', marginBottom: 'clamp(40px, 6vw, 64px)' }}>
-          <motion.h2
+        <div style={{ marginBottom: 'clamp(40px, 6vw, 64px)' }}>
+          <SplitHeading
+            text="Let's build something great."
+           
+            delay={0.12}
+            stagger={0.08}
             className="contact-heading"
-            initial={{ y: '105%' }}
-            animate={inView ? { y: 0 } : { y: '105%' }}
-            transition={{ delay: 0.1, duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
-          >
-            Let's build<br />something great.
-          </motion.h2>
+          />
         </div>
 
       </div>

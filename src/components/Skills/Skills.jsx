@@ -118,7 +118,7 @@ const levelColors = {
 
 function SkillRow({ skill, index }) {
   const rowRef   = useRef(null)
-  const isInView = useInView(rowRef, { once: false, margin: '-48px' })
+  const isInView = useInView(rowRef, { once: true })
 
   return (
     <motion.div
@@ -197,8 +197,8 @@ function SkillRow({ skill, index }) {
 export default function Skills() {
   const sectionRef   = useRef(null)
   const headerRef    = useRef(null)
-  const inView       = useInView(sectionRef,  { once: false, margin: '-80px' })
-  const headerInView = useInView(headerRef,   { once: false, margin: '-60px' })
+  const inView       = useInView(sectionRef,  { once: true })
+  const headerInView = useInView(headerRef,   { once: true })
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -234,9 +234,9 @@ export default function Skills() {
                 <div key={line} className="sk-hl-clip">
                   <motion.h2
                     className="sk-headline"
-                    initial={{ y: '112%' }}
-                    animate={headerInView ? { y: '0%' } : { y: '112%' }}
-                    transition={{ delay: 0.08 + i * 0.1, duration: 0.82, ease: [0.76,0,0.24,1] }}
+                    initial={{ y: '112%', skewY: 4 }}
+                    animate={headerInView ? { y: '0%', skewY: 0 } : { y: '112%', skewY: 4 }}
+                    transition={{ delay: 0.06 + i * 0.12, duration: 0.78, ease: [0.76,0,0.24,1] }}
                   >
                     {line}
                   </motion.h2>

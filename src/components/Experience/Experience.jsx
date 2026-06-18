@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import SplitHeading from '../../utils/SplitHeading'
 import './Experience.css'
 
 const chapters = [
@@ -46,7 +47,7 @@ const education = {
 export default function Experience() {
   const ref = useRef(null)
   const [active, setActive] = useState(0)
-  const inView = useInView(ref, { once: false, margin: '-80px' })
+  const inView = useInView(ref, { once: true })
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const bgY = useTransform(scrollYProgress, [0, 1], ['7%', '-7%'])
   const lineScale = useTransform(scrollYProgress, [0.15, 0.78], [0, 1])
@@ -71,15 +72,21 @@ export default function Experience() {
             <span>Experience</span>
           </motion.div>
 
-          <motion.div
-            className="exp-heading"
-            initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            transition={{ delay: 0.14, duration: 0.62 }}
-          >
-            <p>Employer journey</p>
-            <h2>Three companies. One frontend craft, sharpened over time.</h2>
-          </motion.div>
+          <div className="exp-heading">
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+              transition={{ delay: 0.14, duration: 0.5 }}
+            >
+              Employer journey
+            </motion.p>
+            <SplitHeading
+              text="Three companies. One craft, sharpened with every platform."
+             
+              delay={0.04}
+              className="exp-heading-h2"
+            />
+          </div>
         </div>
 
         <div className="exp-showcase">

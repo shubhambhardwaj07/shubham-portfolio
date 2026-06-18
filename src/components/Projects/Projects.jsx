@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import SplitHeading from '../../utils/SplitHeading'
 import './Projects.css'
 
 const work = [
@@ -38,7 +39,7 @@ const work = [
 export default function Projects() {
   const ref = useRef(null)
   const [active, setActive] = useState(0)
-  const inView = useInView(ref, { once: false, margin: '-80px' })
+  const inView = useInView(ref, { once: true })
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const bgY = useTransform(scrollYProgress, [0, 1], ['8%', '-8%'])
   const activeWork = work[active]
@@ -62,19 +63,30 @@ export default function Projects() {
             <span>Work</span>
           </motion.div>
 
-          <motion.div
-            className="projects-copy"
-            initial={{ opacity: 0, y: 18 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-            transition={{ delay: 0.16, duration: 0.62, ease: [0.76, 0, 0.24, 1] }}
-          >
-            <p className="projects-eyebrow">Client map</p>
-            <h2>Client work, translated into durable systems.</h2>
-            <p>
-              A concise map of the environments I have served, and the kind of
-              frontend problems each chapter asked me to solve.
-            </p>
-          </motion.div>
+          <div className="projects-copy">
+            <motion.p
+              className="projects-eyebrow"
+              initial={{ opacity: 0, y: 8 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+              transition={{ delay: 0.14, duration: 0.5 }}
+            >
+              Client map
+            </motion.p>
+            <SplitHeading
+              text="Three clients. Real scale. Durable frontend systems."
+             
+              delay={0.04}
+              className="projects-copy-h2"
+            />
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+              transition={{ delay: 0.42, duration: 0.6 }}
+            >
+              A map of the environments I've delivered in — and what each one
+              asked me to solve at platform level.
+            </motion.p>
+          </div>
         </div>
 
         <div className="work-atlas">

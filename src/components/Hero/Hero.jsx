@@ -8,7 +8,7 @@ export default function Hero() {
   const yContent = useTransform(scrollYProgress, [0, 1], [0, 80])
   const opacityContent = useTransform(scrollYProgress, [0, 0.55], [1, 0])
   const yBgText = useTransform(scrollYProgress, [0, 1], [0, 50])
-  const yPhoto = useTransform(scrollYProgress, [0, 1], [0, 60])
+  const yPhoto = useTransform(scrollYProgress, [0, 1], [0, 32])
 
   return (
     <section id="hero" className="hero" ref={ref}>
@@ -37,7 +37,7 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
         >
           <span className="hero-status-dot" />
-          <span>Available for selective frontend work</span>
+          <span>Open to senior frontend engagements</span>
         </motion.div>
 
         <div className="hero-name-wrap">

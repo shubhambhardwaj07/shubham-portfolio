@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Lenis from 'lenis'
 import { ThemeProvider } from './context/ThemeContext'
 import Cursor from './components/Cursor/Cursor'
 import Loader from './components/Loader/Loader'
@@ -13,6 +14,18 @@ import Contact from './components/Contact/Contact'
 
 function App() {
   const [loaderDone, setLoaderDone] = useState(false)
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothTouch: false,
+    })
+    let rafId
+    function raf(time) { lenis.raf(time); rafId = requestAnimationFrame(raf) }
+    rafId = requestAnimationFrame(raf)
+    return () => { cancelAnimationFrame(rafId); lenis.destroy() }
+  }, [])
 
   return (
     <ThemeProvider>

@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import SplitHeading from '../../utils/SplitHeading'
 import './About.css'
 
 const principles = [
@@ -34,7 +35,7 @@ const links = [
 
 export default function About() {
   const sectionRef = useRef(null)
-  const inView = useInView(sectionRef, { once: false, margin: '-80px' })
+  const inView = useInView(sectionRef, { once: true })
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -65,12 +66,24 @@ export default function About() {
 
           <motion.div
             className="ab-intro"
-            initial={{ opacity: 0, y: 18 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-            transition={{ delay: 0.16, duration: 0.68, ease: [0.76, 0, 0.24, 1] }}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: 0.12, duration: 0.5 }}
           >
-            <span className="ab-kicker">Frontend developer · UI systems</span>
-            <h2>I build frontend systems that make complex work feel clear.</h2>
+            <motion.span
+              className="ab-kicker"
+              initial={{ opacity: 0, y: 8 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+              transition={{ delay: 0.14, duration: 0.5 }}
+            >
+              Frontend developer · UI systems
+            </motion.span>
+            <SplitHeading
+              text="I build frontend systems that make complex work feel clear."
+             
+              delay={0.04}
+              className="ab-intro-h2"
+            />
             <p>
               My sweet spot is enterprise product engineering: translating layered
               domains into composed interfaces, durable architecture, and delivery
@@ -93,7 +106,7 @@ export default function About() {
             </div>
             <div className="ab-status">
               <span className="ab-status-dot" />
-              Available for meaningful frontend platform work
+              Open to senior frontend engagements
             </div>
           </motion.div>
 

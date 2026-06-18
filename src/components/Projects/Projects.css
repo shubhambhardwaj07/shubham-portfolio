@@ -55,9 +55,9 @@
   font-weight: 700;
 }
 
-.projects-copy h2 {
+.projects-copy-h2 {
   font-size: clamp(38px,6vw,82px);
-  line-height: 0.96;
+  line-height: 1.05;
   letter-spacing: -0.05em;
   color: var(--text);
   max-width: 860px;
@@ -344,12 +344,29 @@
 
 @media (max-width: 560px) {
   .work-card {
-    min-height: 430px;
+    min-height: 380px;
+    padding: clamp(18px,5vw,26px);
   }
 
   .work-card-client h3,
   .work-dossier-main h3 {
     max-width: none;
+    font-size: clamp(18px,5.5vw,28px);
+  }
+
+  .projects-copy-h2 {
+    font-size: clamp(30px,9vw,48px);
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+  }
+
+  .work-card-body h4 {
+    font-size: clamp(14px,4vw,18px);
+  }
+
+  .work-card-body p {
+    font-size: 14px;
+    line-height: 1.65;
   }
 
   .projects-bg-word {
