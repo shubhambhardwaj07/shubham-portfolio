@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import SplitHeading from '../../utils/SplitHeading'
+import ScrollRevealText from '../../utils/ScrollRevealText'
 import './Projects.css'
 
 const work = [
@@ -78,14 +79,12 @@ export default function Projects() {
               delay={0.04}
               className="projects-copy-h2"
             />
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
-              transition={{ delay: 0.42, duration: 0.6 }}
-            >
-              A map of the environments I've delivered in — and what each one
-              asked me to solve at platform level.
-            </motion.p>
+            <ScrollRevealText
+              text="A map of the environments I've delivered in — and what each one asked me to solve at platform level."
+              delay={0.42}
+              wordDelay={0.05}
+              duration={0.72}
+            />
           </div>
         </div>
 

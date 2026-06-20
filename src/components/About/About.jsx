@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import SplitHeading from '../../utils/SplitHeading'
+import ScrollRevealText from '../../utils/ScrollRevealText'
 import './About.css'
 
 const principles = [
@@ -84,11 +85,6 @@ export default function About() {
               delay={0.04}
               className="ab-intro-h2"
             />
-            <p>
-              My sweet spot is enterprise product engineering: translating layered
-              domains into composed interfaces, durable architecture, and delivery
-              habits that help teams move with confidence.
-            </p>
           </motion.div>
         </div>
 
@@ -118,10 +114,12 @@ export default function About() {
               transition={{ delay: 0.28, duration: 0.64 }}
             >
               <span>Working style</span>
-              <p>
-                I pair consulting clarity with hands-on engineering depth: ask sharper
-                questions, reduce accidental complexity, and ship with restraint.
-              </p>
+              <ScrollRevealText
+                text="I pair consulting clarity with hands-on engineering depth: ask sharper questions, reduce accidental complexity, and ship with restraint."
+                delay={0.1}
+                wordDelay={0.05}
+                duration={0.72}
+              />
             </motion.div>
 
             <div className="ab-principles">

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import SplitHeading from '../../utils/SplitHeading'
+import ScrollRevealText from '../../utils/ScrollRevealText'
 import './Experience.css'
 
 const chapters = [
@@ -156,7 +157,13 @@ export default function Experience() {
                     </div>
 
                     <p className="exp-headline">{chapter.headline}</p>
-                    <p className="exp-summary">{chapter.summary}</p>
+                    <ScrollRevealText
+                      text={chapter.summary}
+                      className="exp-summary"
+                      delay={0.1}
+                      wordDelay={0.04}
+                      duration={0.72}
+                    />
 
                     <div className="exp-tags">
                       {chapter.details.map(detail => (

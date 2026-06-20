@@ -34,6 +34,21 @@
   --line:       rgba(0,0,0,0.06);
   --overlay:    rgba(30,28,24,0.05);
 }
+/* ── ScrollRevealText (lamalama word-clip technique) ── */
+.srt-block { display: block; }
+.srt-word-clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1.18;
+  /* clip-path: inset(-10%) mirrors lamalama's technique */
+  clip-path: inset(-12% -2% -12% -2%);
+}
+.srt-word {
+  display: inline-block;
+  will-change: transform;
+}
+
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html { font-size:16px; scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 body {
@@ -115,15 +130,17 @@ button { font-family:var(--font); }
   }
 }
 
-/* Word-split heading reveal */
+/* Word-split heading reveal — lamalama clip-path technique */
 .split-word {
   display: inline-block;
-  overflow: hidden;
   vertical-align: bottom;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  /* Clip slightly larger than element so descenders don't cut */
+  clip-path: inset(-12% -1% -12% -1%);
 }
-.split-word-inner { display: inline-block; }
+.split-word-inner {
+  display: inline-block;
+  will-change: transform;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after {

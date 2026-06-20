@@ -16,7 +16,7 @@
 }
 
 .contact-heading {
-  font-size:clamp(40px,7vw,90px); font-weight:700; color:var(--text);
+  font-size:clamp(38px,5.8vw,78px); font-weight:700; color:var(--text);
   letter-spacing:-0.04em; line-height:0.9;
   margin-bottom:clamp(40px,6vw,64px); will-change:transform;
 }
@@ -167,7 +167,7 @@
 }
 @media (max-width:480px) {
   .contact-heading {
-    font-size:clamp(38px,13vw,58px);
+    font-size:clamp(32px,9.5vw,52px);
     line-height:0.95;
     letter-spacing:-0.035em;
   }

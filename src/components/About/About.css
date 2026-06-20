@@ -44,8 +44,8 @@
 }
 
 .ab-kicker,
-.ab-statement span,
-.ab-principle span {
+.ab-statement > span,
+.ab-principle > span {
   display: inline-block;
   font-size: clamp(9px,1vw,11px);
   letter-spacing: 0.16em;
@@ -55,7 +55,7 @@
 }
 
 .ab-intro-h2 {
-  font-size: clamp(38px,6vw,82px);
+  font-size: clamp(38px,5.8vw,78px);
   line-height: 1.05;
   letter-spacing: -0.05em;
   color: var(--text);
