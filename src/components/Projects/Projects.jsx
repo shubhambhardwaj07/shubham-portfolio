@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
-import SplitHeading from '../../utils/SplitHeading'
-import ScrollRevealText from '../../utils/ScrollRevealText'
+import { useRef, useState, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Projects.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const work = [
   {
@@ -38,63 +39,96 @@ const work = [
 ]
 
 export default function Projects() {
-  const ref = useRef(null)
+  const sectionRef = useRef(null)
+  const descRef    = useRef(null)
   const [active, setActive] = useState(0)
-  const inView = useInView(ref, { once: true })
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['8%', '-8%'])
   const activeWork = work[active]
 
+  /* ── Entry timeline ── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+
+      gsap.set('.pr-ghost',              { y: 40, opacity: 0 })
+      gsap.set('.projects .section-label', { x: -20, opacity: 0 })
+      gsap.set('.pr-eyebrow',            { y: 12, opacity: 0 })
+      gsap.set('.pr-hw',                 { yPercent: 115 })
+      gsap.set('.pr-dossier',            { y: 28, opacity: 0 })
+      gsap.set('.work-card',             { y: 32, opacity: 0 })
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 78%', once: true },
+      })
+
+      tl.to('.pr-ghost',               { y: 0, opacity: 0.018, duration: 2.4, ease: 'power4.out' }, 0)
+      tl.to('.projects .section-label',{ x: 0, opacity: 1, duration: 0.72, ease: 'power3.out' }, 0.1)
+      tl.to('.pr-eyebrow',             { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.2)
+      tl.to('.pr-hw',                  { yPercent: 0, duration: 1.25, stagger: 0.08, ease: 'expo.out' }, 0.26)
+      tl.to('.pr-dossier',             { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out' }, 0.6)
+      tl.to('.work-card',              { y: 0, opacity: 1, duration: 0.75, stagger: 0.1, ease: 'expo.out' }, 0.7)
+
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
+  /* ── Ghost word parallax ── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.to('.pr-ghost', {
+        yPercent: -28, ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom', end: 'bottom top', scrub: 1.5,
+        },
+      })
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
+  /* ── Word scrub on description ── */
+  useEffect(() => {
+    const el = descRef.current
+    if (!el) return
+
+    const text = el.textContent.trim()
+    el.innerHTML = text.split(/\s+/).map(w => `<span class="pr-word">${w}</span>`).join(' ')
+    const words = el.querySelectorAll('.pr-word')
+    gsap.set(words, { opacity: 0.12 })
+    gsap.to(words, {
+      opacity: 1, stagger: 0.08, ease: 'none',
+      scrollTrigger: { trigger: el, start: 'top 78%', end: 'bottom 30%', scrub: 1.5 },
+    })
+  }, [])
+
   return (
-    <section id="projects" className="projects" ref={ref}>
+    <section id="projects" className="projects" ref={sectionRef}>
       <div className="section-grid" />
-      <motion.div className="projects-bg-word" style={{ y: bgY }} aria-hidden>
-        Client
-      </motion.div>
+      <span className="pr-ghost" aria-hidden>Client</span>
 
       <div className="projects-inner">
         <div className="projects-top">
-          <motion.div
-            className="section-label"
-            initial={{ opacity: 0, x: -16 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-            transition={{ duration: 0.55 }}
-          >
+          <div className="section-label">
             <span className="section-label-num">03</span>
             <span>Work</span>
-          </motion.div>
+          </div>
 
           <div className="projects-copy">
-            <motion.p
-              className="projects-eyebrow"
-              initial={{ opacity: 0, y: 8 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{ delay: 0.14, duration: 0.5 }}
-            >
-              Client map
-            </motion.p>
-            <SplitHeading
-              text="Three clients. Real scale. Durable frontend systems."
-             
-              delay={0.04}
-              className="projects-copy-h2"
-            />
-            <ScrollRevealText
-              text="A map of the environments I've delivered in — and what each one asked me to solve at platform level."
-              delay={0.42}
-              wordDelay={0.05}
-              duration={0.72}
-            />
+            <p className="pr-eyebrow">Client map</p>
+
+            <h2 className="pr-heading">
+              <span className="pr-hline"><span className="pr-hw">Three clients.</span></span>
+              <span className="pr-hline"><span className="pr-hw">Real scale.</span></span>
+              <span className="pr-hline"><span className="pr-hw">Durable frontend systems.</span></span>
+            </h2>
+
+            <p className="projects-desc" ref={descRef}>
+              A map of the environments I've delivered in — and what each one asked me
+              to solve at platform level.
+            </p>
           </div>
         </div>
 
         <div className="work-atlas">
-          <motion.aside
-            className="work-dossier"
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ delay: 0.22, duration: 0.72, ease: [0.76, 0, 0.24, 1] }}
-          >
+          <aside className="work-dossier pr-dossier">
             <div className="work-dossier-head">
               <span>Active dossier</span>
               <strong>{activeWork.client}</strong>
@@ -107,40 +141,32 @@ export default function Projects() {
               <span>{activeWork.domain}</span>
               <span>{activeWork.id}</span>
             </div>
-          </motion.aside>
+          </aside>
 
           <div className="work-grid">
             {work.map((item, index) => (
-              <motion.article
+              <article
                 key={item.clientName}
                 className={`work-card${active === index ? ' work-card-active' : ''}`}
                 onMouseEnter={() => setActive(index)}
-                initial={{ opacity: 0, y: 28 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-                transition={{ delay: 0.28 + index * 0.09, duration: 0.64, ease: [0.76, 0, 0.24, 1] }}
               >
                 <div className="work-card-top">
                   <span>{item.id}</span>
                   <strong>{item.client}</strong>
                 </div>
-
                 <div className="work-card-client">
                   <p>{item.employer}</p>
                   <h3>{item.clientName}</h3>
                   <span>{item.domain}</span>
                 </div>
-
                 <div className="work-card-body">
                   <h4>{item.title}</h4>
                   <p>{item.summary}</p>
                 </div>
-
                 <div className="work-tags">
-                  {item.highlights.map(highlight => (
-                    <span key={highlight}>{highlight}</span>
-                  ))}
+                  {item.highlights.map(h => <span key={h}>{h}</span>)}
                 </div>
-              </motion.article>
+              </article>
             ))}
           </div>
         </div>

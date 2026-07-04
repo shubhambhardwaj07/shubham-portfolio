@@ -38,7 +38,7 @@
   border: 1px solid var(--border-mid);
   overflow: hidden;
   will-change: transform, clip-path;
-  /* clip-path is animated by Framer Motion */
+  /* clip-path scrub animated by GSAP ScrollTrigger */
 }
 
 /* ── LEFT COLUMN ── */
@@ -87,13 +87,22 @@
   font-family: var(--mono);
 }
 
-/* Title — SplitHeading override */
-.yt-title {
+/* Title — clip-reveal lines */
+.yt-title { max-width: 10ch; }
+
+.yt-title-hline {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.04em;
+}
+
+.yt-title-line {
+  display: block;
   font-size: clamp(28px, 4.2vw, 62px);
   line-height: 1.0;
   letter-spacing: -0.045em;
   color: var(--text);
-  max-width: 10ch;
+  will-change: transform;
 }
 
 .yt-manifesto {

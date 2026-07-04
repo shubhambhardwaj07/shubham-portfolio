@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ThemeProvider } from './context/ThemeContext'
+
+gsap.registerPlugin(ScrollTrigger)
 import Cursor from './components/Cursor/Cursor'
 import Loader from './components/Loader/Loader'
 import Navbar from './components/Navbar/Navbar'
@@ -21,6 +25,9 @@ function App() {
       easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothTouch: false,
     })
+    // Keep Lenis on its own rAF loop but notify ScrollTrigger on every scroll
+    // so GSAP triggers fire at the correct interpolated position (fixes flicker).
+    lenis.on('scroll', ScrollTrigger.update)
     let rafId
     function raf(time) { lenis.raf(time); rafId = requestAnimationFrame(raf) }
     rafId = requestAnimationFrame(raf)
@@ -37,7 +44,7 @@ function App() {
       {/* NO visibility:hidden — loader covers it anyway, no flash */}
       <Navbar />
       <main>
-        <Hero />
+        <Hero loaderDone={loaderDone} />
         <About />
         <Skills />
         <Projects />

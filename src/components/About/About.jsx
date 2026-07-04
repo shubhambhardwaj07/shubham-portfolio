@@ -1,229 +1,422 @@
-import { useRef } from 'react'
-import { motion, useInView, useScroll, useTransform, useAnimationFrame } from 'framer-motion'
-import SplitHeading from '../../utils/SplitHeading'
-import ScrollRevealText from '../../utils/ScrollRevealText'
-import CountUp from '../../utils/CountUp'
+import { useRef, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './About.css'
 
-/* ── TICKER ── */
-function Ticker({ items, speed = 0.52 }) {
-  const trackRef = useRef(null)
-  const x = useRef(0)
+gsap.registerPlugin(ScrollTrigger)
 
-  useAnimationFrame((_, delta) => {
-    if (!trackRef.current) return
-    const el = trackRef.current
-    const w = el.scrollWidth / 2
-    x.current -= speed * (delta / 16.67)
-    if (x.current <= -w) x.current += w
-    el.style.transform = `translateX(${x.current}px)`
-  })
+/* ── DATA — the person, not the résumé.
+   Career history lives in 04 Experience, clients in
+   03 Work, tools in 02 Expertise, the channel in 05.
+   Nothing here repeats them. ── */
 
-  const doubled = [...items, ...items]
+const STATS = [
+  { num: 7,  suf: '+', label: 'Years' },
+  { num: 50, suf: '+', label: 'Projects' },
+  { num: 8,  suf: '+', label: 'Teams led' },
+  { num: 95, suf: '',  label: 'Lighthouse' },
+]
+
+const CHIPS = ['Systems thinker', 'Detail obsessive', 'Calm under deadlines']
+
+const PRINCIPLES = [
+  {
+    idx: '01',
+    title: 'Decouple by default',
+    copy: 'Small, independently shippable pieces. Team A should never wait on Team B’s deploy.',
+    tag: 'Architecture',
+  },
+  {
+    idx: '02',
+    title: 'Tests before trust',
+    copy: 'If it isn’t covered, it isn’t done. Banking floors taught me that the hard way.',
+    tag: 'Discipline',
+  },
+  {
+    idx: '03',
+    title: 'Budget the milliseconds',
+    copy: 'Performance is a spec, not a hope — measured, budgeted, defended in review.',
+    tag: 'Speed',
+  },
+  {
+    idx: '04',
+    title: 'Motion means something',
+    copy: 'Animation is information: hierarchy, causality, state. Never garnish.',
+    tag: 'Feel',
+  },
+]
+
+const GUARANTEES = [
+  {
+    idx: '01',
+    title: 'Interfaces that explain themselves',
+    note: 'If it needs a tutorial, it isn’t finished. Clarity is the deliverable.',
+  },
+  {
+    idx: '02',
+    title: 'Code your next hire can read',
+    note: 'Written for the maintainer, not the author. Six-months-later me is a stakeholder too.',
+  },
+  {
+    idx: '03',
+    title: 'Boring deploys',
+    note: 'Feature-flagged, tested, reversible. Excitement belongs in the UI, not the release.',
+  },
+  {
+    idx: '04',
+    title: 'Straight answers',
+    note: 'Honest estimates, early red flags — consulting habits that outlive the contract.',
+  },
+]
+
+const RECORD_COLS = [
+  {
+    label: 'Credentials',
+    rows: [
+      { text: 'Azure Fundamentals — AZ-900' },
+      { text: 'Azure Developer — AZ-204' },
+      { text: 'AI Prompt Engineering' },
+    ],
+  },
+  {
+    label: 'Firsts',
+    rows: [
+      { text: 'First production ship — 2019' },
+      { text: 'First MFE migration — 2021' },
+      { text: 'First team led — 2022' },
+    ],
+  },
+  {
+    label: 'Elsewhere in this site',
+    rows: [
+      { text: 'The client work', href: '#projects',   num: '03' },
+      { text: 'The full history', href: '#experience', num: '04' },
+      { text: 'The channel', href: '#youtube',         num: '05' },
+    ],
+  },
+]
+
+/* Split a string into char spans (award-style kinetic type) */
+function Chars({ text }) {
   return (
-    <div className="ab-ticker" aria-hidden>
-      <div className="ab-ticker-track" ref={trackRef}>
-        {doubled.map((item, i) => (
-          <span key={i} className="ab-ticker-item">
-            {item}
-            <span className="ab-ticker-sep" aria-hidden>·</span>
-          </span>
-        ))}
-      </div>
-    </div>
+    <span className="abh-chsplit" aria-label={text}>
+      {text.split('').map((c, i) => (
+        <span className="abh-ch-mask" key={i} aria-hidden="true">
+          <span className="abh-ch">{c === ' ' ? ' ' : c}</span>
+        </span>
+      ))}
+    </span>
   )
 }
 
-/* ── DATA ── */
-const tickerItems = [
-  'React', 'TypeScript', 'Micro Frontend', 'GraphQL', 'Web Performance',
-  'Jest / RTL', 'Redux', 'Node.js', 'Azure', 'Design Systems', 'Module Federation', 'TDD',
-]
-
-const principles = [
-  {
-    num: '01',
-    label: 'Architecture',
-    title: 'Systems with a long shelf life',
-    copy: 'I shape frontends around ownership, boundaries, and code paths a team can keep evolving with confidence.',
-  },
-  {
-    num: '02',
-    label: 'Delivery',
-    title: 'Delivery without noise',
-    copy: 'I prefer tight feedback loops, deliberate tradeoffs, and decisions that remove friction before it becomes visible.',
-  },
-  {
-    num: '03',
-    label: 'Craft',
-    title: 'Interfaces that stay calm',
-    copy: 'The experience should remain accessible, fast, and predictable when real users and real workflows depend on it.',
-  },
-]
-
-const links = [
-  ['GitHub',   'https://github.com/shubhambhardwaj07'],
-  ['LinkedIn', 'https://www.linkedin.com/in/shubham-bhardwaj07/'],
-  ['LeetCode', 'https://leetcode.com/u/shubh_bhardwaj07/'],
-]
-
-/* ── SECTION ── */
+/* ── COMPONENT ── */
 export default function About() {
-  const sectionRef   = useRef(null)
-  const principleRef = useRef(null)
-  const inView          = useInView(sectionRef,   { once: true })
-  const principlesInView = useInView(principleRef, { once: true })
+  const sectionRef = useRef(null)
+  const stageRef   = useRef(null)   // pinned viewport
+  const trackRef   = useRef(null)   // horizontal track
+  const counterRef = useRef(null)
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
+  /* Stats countup — guarded per effect run, NOT by a ref:
+     StrictMode reverts kill tweens from the first run, so
+     the second run must be able to fire again. */
+  const runCountup = () => {
+    sectionRef.current?.querySelectorAll('.abh-stat-val').forEach((el, i) => {
+      const proxy = { n: 0 }
+      gsap.to(proxy, {
+        n: STATS[i].num, duration: 1.8, ease: 'power3.out', snap: { n: 1 },
+        delay: i * 0.08,
+        onUpdate() { el.textContent = proxy.n },
+      })
+    })
+  }
 
-  const portraitY = useTransform(scrollYProgress, [0, 1], ['-5%', '7%'])
-  const wordY     = useTransform(scrollYProgress, [0, 1], ['7%', '-7%'])
-  const lineScale = useTransform(scrollYProgress, [0.04, 0.32], [0, 1])
+  /* ═══════════════════════════════════════════════
+     1. HORIZONTAL CINEMA — desktop pins the stage and
+     drags the 4-page manual sideways on scroll.
+  ═══════════════════════════════════════════════ */
+  useEffect(() => {
+    const mm = gsap.matchMedia()
+    let counted = false
+    const fireCountup = () => {
+      if (counted) return
+      counted = true
+      runCountup()
+    }
 
+    mm.add('(min-width: 861px)', () => {
+      const track = trackRef.current
+      const panels = gsap.utils.toArray('.abh-panel', track)
+      const shift = -(100 * (panels.length - 1) / panels.length) // -75 for 4
+
+      /* Clear any stale inline styles from a breakpoint crossing */
+      panels.forEach(p => gsap.set(p.querySelectorAll('.abh-rev'), { clearProps: 'all' }))
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: stageRef.current,
+          start: 'top top',
+          end: '+=320%',
+          pin: true,
+          scrub: 0.75,
+          anticipatePin: 1,
+          onUpdate(self) {
+            const i = Math.min(panels.length, Math.floor(self.progress * panels.length) + 1)
+            if (counterRef.current) counterRef.current.textContent = `0${i}`
+            if (self.progress > 0.7) fireCountup()
+          },
+        },
+        defaults: { ease: 'none' },
+      })
+
+      tl.to(track, { xPercent: shift, duration: 4 }, 0)
+
+      /* Hint hands over to coordinates once the ride starts (scrub-reversible) */
+      tl.to('.abh-hint',   { opacity: 0, duration: 0.25 }, 0.22)
+      tl.to('.abh-coords', { opacity: 1, duration: 0.25 }, 0.42)
+
+      /* Choreographed to the ride: each arriving page's content
+         cascades in while the track carries it to center */
+      panels.forEach((panel, i) => {
+        if (i === 0) return
+
+        const num = panel.querySelector('.abh-panel-num')
+        if (num) {
+          tl.fromTo(num, { xPercent: 46 }, { xPercent: -18, duration: 2 }, i - 1)
+        }
+
+        tl.fromTo(panel.querySelectorAll('.abh-rev'),
+          { y: 44, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.42, stagger: 0.05, ease: 'power2.out' },
+          i - 1 + 0.42
+        )
+      })
+
+      /* Progress rail */
+      tl.to('.abh-rail-fill', { scaleX: 1, duration: 4 }, 0)
+
+      return () => {}
+    })
+
+    mm.add('(max-width: 860px)', () => {
+      /* Page 1 is handled by the char-split entrance; reveal pages 2-4 */
+      gsap.utils.toArray('.abh-panel:not(.abh-p1)', trackRef.current).forEach((panel) => {
+        const els = panel.querySelectorAll('.abh-rev')
+        gsap.set(els, { clearProps: 'all' })
+        gsap.set(els, { y: 26, opacity: 0 })
+        gsap.to(els, {
+          y: 0, opacity: 1, duration: 0.75, stagger: 0.06, ease: 'power3.out',
+          scrollTrigger: { trigger: panel, start: 'top 78%', once: true },
+        })
+      })
+
+      ScrollTrigger.create({
+        trigger: '.abh-p4', start: 'top 80%', once: true,
+        onEnter: fireCountup,
+      })
+    })
+
+    return () => mm.revert()
+  }, [])
+
+  /* ═══════════════════════════════════════════════
+     2. PAGE ONE — char-split kinetic headline
+  ═══════════════════════════════════════════════ */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set('.abh-ch', { yPercent: 120, rotate: 5 })
+      gsap.set('.abh-p1 .abh-kicker', { y: 18, opacity: 0 })
+      gsap.set('.abh-p1 .abh-sub',    { y: 22, opacity: 0 })
+      gsap.set('.abh-chip',           { y: 14, opacity: 0 })
+      gsap.set('.abh-spec',           { y: 26, opacity: 0 })
+      gsap.set('.abh-hint',           { opacity: 0 })
+      gsap.set('.abh-progress',       { opacity: 0 })
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 74%', once: true },
+      })
+
+      tl.to('.abh-p1 .abh-kicker', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0)
+      tl.to('.abh-ch', {
+        yPercent: 0, rotate: 0,
+        duration: 1.1, ease: 'expo.out',
+        stagger: { each: 0.018, from: 'start' },
+      }, 0.12)
+      tl.to('.abh-p1 .abh-sub', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, 0.7)
+      tl.to('.abh-chip', { y: 0, opacity: 1, duration: 0.55, stagger: 0.07, ease: 'power3.out' }, 0.85)
+      tl.to('.abh-spec', { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }, 0.6)
+      tl.to('.abh-hint',     { opacity: 1, duration: 0.7 }, 1.05)
+      tl.to('.abh-progress', { opacity: 1, duration: 0.7 }, 1.05)
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
+  /* ── RENDER ── */
   return (
-    <section id="about" className="ab-section" ref={sectionRef}>
-      <div className="section-grid" />
-      <motion.div className="ab-ghost" style={{ y: wordY }} aria-hidden>Profile</motion.div>
+    <section id="about" className="abh-section" ref={sectionRef}>
 
-      <div className="ab-inner">
+      <div className="abh-stage" ref={stageRef}>
+        <div className="section-grid" aria-hidden="true" />
 
-        {/* ── TOP ── */}
-        <div className="ab-top">
-          <motion.div
-            className="section-label"
-            initial={{ opacity: 0, x: -16 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-            transition={{ duration: 0.55 }}
-          >
-            <span className="section-label-num">01</span>
-            <span>About</span>
-          </motion.div>
+        <div className="abh-track" ref={trackRef}>
 
-          <motion.div
-            className="ab-intro"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.12, duration: 0.5 }}
-          >
-            <motion.span
-              className="ab-kicker"
-              initial={{ opacity: 0, y: 8 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{ delay: 0.14, duration: 0.5 }}
-            >
-              Frontend developer · UI systems
-            </motion.span>
-            <SplitHeading
-              text="I build frontend systems that make complex work feel clear."
-              delay={0.04}
-              className="ab-intro-h2"
-            />
-          </motion.div>
-        </div>
+          {/* ═══ PAGE 01 — the cover ═══ */}
+          <div className="abh-panel abh-p1">
+            <div className="abh-panel-in">
+              <span className="abh-kicker">
+                <span className="section-label-num">01</span>&nbsp;&nbsp;About — the user manual
+              </span>
 
-        {/* ── ANIMATED RULE ── */}
-        <motion.div className="ab-rule" style={{ scaleX: lineScale }} />
+              <h2 className="abh-h1">
+                <span className="abh-h1-line"><Chars text="ENGINEER OF" /></span>
+                <span className="abh-h1-line"><Chars text="INTERFACES." /></span>
+              </h2>
 
-        {/* ── TICKER ── */}
-        <Ticker items={tickerItems} />
+              <p className="abh-sub">
+                The résumé lives in the sections below — work, stack, history.
+                This page is the part it can&apos;t hold: how I think, what I
+                optimize for, and what you get when we work together.
+              </p>
 
-        {/* ── SHOWCASE ── */}
-        <div className="ab-showcase">
-
-          {/* PORTRAIT */}
-          <motion.div
-            className="ab-portrait-card"
-            style={{ y: portraitY }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ delay: 0.22, duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
-          >
-            <div className="ab-portrait-frame">
-              <img src="/profile.png" alt="Shubham Bhardwaj" className="ab-portrait" />
-              <div className="ab-grain" />
-              <div className="ab-portrait-shade" />
-
-              {/* Stats overlay at bottom of photo */}
-              <div className="ab-portrait-floats">
-                <div className="ab-pfloat">
-                  <span><CountUp to={7} suffix="+" duration={1400} /></span>
-                  <p>Years</p>
-                </div>
-                <div className="ab-pfloat">
-                  <span><CountUp to={8} suffix="+" duration={1600} /></span>
-                  <p>Teams</p>
-                </div>
-                <div className="ab-pfloat">
-                  <span><CountUp to={3} duration={1200} /></span>
-                  <p>Clients</p>
-                </div>
+              <div className="abh-chips">
+                {CHIPS.map((c) => (
+                  <span className="abh-chip" key={c}>{c}</span>
+                ))}
               </div>
             </div>
 
-            <div className="ab-status">
-              <span className="ab-status-dot" />
-              Open to senior frontend engagements
-            </div>
-          </motion.div>
+            {/* Manual meta card */}
+            <aside className="abh-spec">
+              <span className="abh-spec-head">
+                <span className="abh-spec-dot" aria-hidden="true" />
+                User manual
+              </span>
+              <span className="abh-spec-role">Shubham Bhardwaj — operating notes</span>
+              <span className="abh-spec-org">Version 7.1 · 2026 edition</span>
+              <span className="abh-spec-loc">Four pages · reads sideways</span>
+            </aside>
 
-          {/* PANEL */}
-          <div className="ab-panel">
+            <span className="abh-hint" aria-hidden="true">
+              The story moves sideways
+              <svg width="26" height="10" viewBox="0 0 26 10" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <line x1="0" y1="5" x2="24" y2="5" />
+                <polyline points="20 1 24 5 20 9" />
+              </svg>
+            </span>
+            <span className="abh-coords" aria-hidden="true">12.9716° N — 77.5946° E · BLR</span>
+          </div>
 
-            {/* STATEMENT */}
-            <motion.div
-              className="ab-statement"
-              initial={{ opacity: 0, y: 22 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
-              transition={{ delay: 0.28, duration: 0.64 }}
-            >
-              <span>Working style</span>
-              <ScrollRevealText
-                text="I pair consulting clarity with hands-on engineering depth: ask sharper questions, reduce accidental complexity, and ship with restraint."
-                delay={0.1}
-                wordDelay={0.05}
-                duration={0.72}
-              />
-            </motion.div>
+          {/* ═══ PAGE 02 — how I work ═══ */}
+          <div className="abh-panel abh-p2">
+            <span className="abh-panel-num" aria-hidden="true">02</span>
+            <div className="abh-panel-in abh-p2-grid">
+              <div className="abh-p2-left">
+                <span className="abh-kicker abh-rev">Page 02 — how I work</span>
+                <h3 className="abh-h2 abh-rev">Principles,<br />then tools.</h3>
+                <p className="abh-p2-note abh-rev">
+                  The stack changes every year. These don&apos;t —
+                  they&apos;re what the tools are for.
+                </p>
+              </div>
 
-            {/* PRINCIPLES — fill-hover cards */}
-            <div className="ab-principles" ref={principleRef}>
-              {principles.map((item, index) => (
-                <motion.article
-                  className="ab-principle"
-                  key={item.label}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={principlesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                  transition={{ delay: 0.08 + index * 0.1, duration: 0.62, ease: [0.76, 0, 0.24, 1] }}
-                >
-                  <div className="ab-principle-fill" />
-                  <span className="ab-principle-num">{item.num}</span>
-                  <div className="ab-principle-body">
-                    <span className="ab-principle-label">{item.label}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.copy}</p>
+              <div className="abh-craft-grid">
+                {PRINCIPLES.map((c) => (
+                  <div className="abh-craft-card abh-rev" key={c.idx}>
+                    <div className="abh-craft-top">
+                      <span className="abh-craft-idx">{c.idx}</span>
+                      <span className="abh-craft-tags">{c.tag}</span>
+                    </div>
+                    <span className="abh-craft-title">{c.title}</span>
+                    <p className="abh-craft-copy">{c.copy}</p>
                   </div>
-                </motion.article>
-              ))}
+                ))}
+              </div>
             </div>
+          </div>
 
-            {/* LINKS */}
-            <div className="ab-links">
-              {links.map(([label, href]) => (
-                <a key={label} href={href} target="_blank" rel="noreferrer" className="ab-link" data-hover>
-                  {label}
-                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                    <path d="M2 10L10 2M10 2H4M10 2v6"/>
+          {/* ═══ PAGE 03 — what you get ═══ */}
+          <div className="abh-panel abh-p3">
+            <span className="abh-panel-num" aria-hidden="true">03</span>
+            <div className="abh-panel-in">
+              <span className="abh-kicker abh-rev">Page 03 — the guarantees</span>
+              <h3 className="abh-h2 abh-rev">What you<br />actually get.</h3>
+              <div className="abh-path">
+                {GUARANTEES.map((g) => (
+                  <div className="abh-path-stop abh-rev" key={g.idx}>
+                    <span className="abh-path-idx">{g.idx}</span>
+                    <div className="abh-path-main">
+                      <span className="abh-path-firm">{g.title}</span>
+                      <span className="abh-path-note">{g.note}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <span className="abh-path-foot abh-rev">
+                04 guarantees · 00 asterisks
+              </span>
+            </div>
+          </div>
+
+          {/* ═══ PAGE 04 — the record ═══ */}
+          <div className="abh-panel abh-p4">
+            <span className="abh-panel-num" aria-hidden="true">04</span>
+            <div className="abh-panel-in">
+              <span className="abh-kicker abh-rev">Page 04 — the record</span>
+
+              <div className="abh-stats abh-rev">
+                {STATS.map((s, i) => (
+                  <div className="abh-stat" key={i}>
+                    <span className="abh-stat-num">
+                      <span className="abh-stat-val">0</span>{s.suf}
+                    </span>
+                    <span className="abh-stat-label">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="abh-record-grid">
+                {RECORD_COLS.map((col) => (
+                  <div className="abh-record-col abh-rev" key={col.label}>
+                    <span className="abh-record-label">{col.label}</span>
+                    {col.rows.map((r) =>
+                      r.href ? (
+                        <a className="abh-record-row abh-record-link" href={r.href} key={r.text} data-hover>
+                          <span>{r.text}</span>
+                          <span className="abh-record-num">{r.num} →</span>
+                        </a>
+                      ) : (
+                        <span className="abh-record-row" key={r.text}>{r.text}</span>
+                      )
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <span className="abh-signoff abh-rev">
+                — End of manual. Everything below is proof.
+              </span>
+
+              <div className="abh-cta-row abh-rev">
+                <a href="#contact" className="btn-primary abh-cta" data-hover>
+                  Start a conversation
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="7 7 17 7 17 17" />
                   </svg>
                 </a>
-              ))}
+              </div>
             </div>
-
           </div>
+
+        </div>
+
+        {/* ═══ PROGRESS — counter + rail ═══ */}
+        <div className="abh-progress" aria-hidden="true">
+          <span className="abh-counter"><span ref={counterRef}>01</span>&nbsp;/&nbsp;04</span>
+          <div className="abh-rail"><div className="abh-rail-fill" /></div>
         </div>
       </div>
+
     </section>
   )
 }

@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect } from 'react'
-import { motion, useInView } from 'framer-motion'
-import SplitHeading from '../../utils/SplitHeading'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Contact.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 function MapComponent() {
   const mapRef = useRef(null)
@@ -12,25 +14,17 @@ function MapComponent() {
       const L = (await import('leaflet')).default
       if (instanceRef.current || !mapRef.current) return
 
-      // Amritsar coordinates
       const AMRITSAR = [31.6340, 74.8723]
-
       map = L.map(mapRef.current, {
-        center: AMRITSAR,
-        zoom: 4,
-        scrollWheelZoom: false,
-        zoomControl: true,
-        attributionControl: false,
+        center: AMRITSAR, zoom: 4,
+        scrollWheelZoom: false, zoomControl: true, attributionControl: false,
       })
 
-      // Stadia Maps Stamen Toner — same as Project-Alfa, works deployed
       L.tileLayer(
         'https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.png?api_key=8523e48c-69a1-4363-a608-2ac1fa9d60ce',
         { maxZoom: 20 }
       ).addTo(map)
 
-      // Exact person SVG pin from Project-Alfa with pulsing rings
-      // Dark mode = grey map → dark pin. Light mode = inverted (black) map → light pin
       const isLight = document.documentElement.getAttribute('data-theme') === 'light'
       const outerColor = isLight ? '#d4d0c8' : '#1c1c1e'
       const innerColor = isLight ? '#9a968f' : '#363638'
@@ -49,10 +43,7 @@ function MapComponent() {
 
       const icon = L.divIcon({
         className: 'leaflet-data-marker',
-        html: svg,
-        iconAnchor: [22, 28],
-        iconSize: [26, 32],
-        popupAnchor: [0, -30],
+        html: svg, iconAnchor: [22, 28], iconSize: [26, 32], popupAnchor: [0, -30],
       })
 
       L.marker(AMRITSAR, { icon })
@@ -62,20 +53,14 @@ function MapComponent() {
       instanceRef.current = map
     }
     init()
-    return () => {
-      if (instanceRef.current) {
-        instanceRef.current.remove()
-        instanceRef.current = null
-      }
-    }
+    return () => { if (instanceRef.current) { instanceRef.current.remove(); instanceRef.current = null } }
   }, [])
 
   return <div ref={mapRef} className="contact-map" />
 }
 
 export default function Contact() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
+  const sectionRef = useRef(null)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
@@ -83,74 +68,70 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSending(true)
-
     const payload = {
-      name: form.name,
-      email: form.email,
-      message: form.message,
+      name: form.name, email: form.email, message: form.message,
       _subject: `Portfolio enquiry from ${form.name}`,
-      _template: 'table',
-      _captcha: 'false',
+      _template: 'table', _captcha: 'false',
     }
-
     try {
       const res = await fetch('https://formsubmit.co/ajax/Shubham998845@gmail.com', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
       })
-
       if (!res.ok) throw new Error('Form service unavailable')
       setSent(true)
-      setTimeout(() => {
-        setSent(false)
-        setForm({ name: '', email: '', message: '' })
-      }, 3500)
+      setTimeout(() => { setSent(false); setForm({ name: '', email: '', message: '' }) }, 3500)
     } catch {
       const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`)
       const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)
       window.location.href = `mailto:Shubham998845@gmail.com?subject=${subject}&body=${body}`
-    } finally {
-      setSending(false)
-    }
+    } finally { setSending(false) }
   }
 
+  /* ── GSAP entrance ── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+
+      gsap.set('.contact .section-label', { x: -20, opacity: 0 })
+      gsap.set('.ct-hw',                  { yPercent: 115 })
+      gsap.set('.contact-map-wrap',       { y: 28, opacity: 0 })
+      gsap.set('.contact-form-wrap',      { y: 28, opacity: 0 })
+      gsap.set('.contact-info-item',      { y: 14, opacity: 0 })
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', once: true },
+      })
+
+      tl.to('.contact .section-label', { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0)
+      tl.to('.ct-hw', { yPercent: 0, duration: 1.2, stagger: 0.08, ease: 'expo.out' }, 0.1)
+      tl.to('.contact-map-wrap',  { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, 0.55)
+      tl.to('.contact-form-wrap', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, 0.68)
+      tl.to('.contact-info-item', { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }, 0.82)
+
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="contact" className="contact" ref={ref}>
+    <section id="contact" className="contact" ref={sectionRef}>
       <div className="section-grid" />
       <div className="contact-inner">
-        <motion.div
-          className="section-label"
-          initial={{ opacity: 0, x: -16 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-          transition={{ duration: 0.55 }}
-        >
+        <div className="section-label">
           <span className="section-label-num">06</span>
           <span>Contact</span>
-        </motion.div>
-
-        <div style={{ marginBottom: 'clamp(40px, 6vw, 64px)' }}>
-          <SplitHeading
-            text="Let's build something great."
-           
-            delay={0.12}
-            stagger={0.08}
-            className="contact-heading"
-          />
         </div>
 
+        <div style={{ marginBottom: 'clamp(40px, 6vw, 64px)' }}>
+          <h2 className="contact-heading">
+            <span className="ct-hline"><span className="ct-hw">Let's build</span></span>
+            <span className="ct-hline"><span className="ct-hw">something great.</span></span>
+          </h2>
+        </div>
       </div>
 
       <div className="contact-body">
-        <motion.div
-          className="contact-map-wrap"
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-          transition={{ delay: 0.28, duration: 0.75 }}
-        >
+        <div className="contact-map-wrap">
           <MapComponent />
           <div className="contact-map-label">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -158,28 +139,18 @@ export default function Contact() {
             </svg>
             Amritsar, India
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="contact-form-wrap"
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-          transition={{ delay: 0.38, duration: 0.75 }}
-        >
+        <div className="contact-form-wrap">
           {sent ? (
-            <motion.div
-              className="contact-success"
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-            >
+            <div className="contact-success">
               <div className="contact-success-icon">✓</div>
               <p>Message sent!<br />I'll get back to you soon.</p>
-            </motion.div>
+            </div>
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
               {[
-                { key: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
+                { key: 'name',  label: 'Name',  type: 'text',  placeholder: 'Your name' },
                 { key: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
               ].map(({ key, label, type, placeholder }) => (
                 <div key={key} className="form-field">
@@ -203,7 +174,8 @@ export default function Contact() {
               </div>
               <button className="form-submit" type="submit" data-hover disabled={sending}>
                 {sending ? 'Sending...' : 'Send Message'}
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.5">
                   <line x1="22" y1="2" x2="11" y2="13"/>
                   <polygon points="22 2 15 22 11 13 2 9 22 2"/>
                 </svg>
@@ -213,9 +185,9 @@ export default function Contact() {
 
           <div className="contact-info">
             {[
-              { label: 'Email', text: 'Shubham998845@gmail.com', href: 'mailto:Shubham998845@gmail.com' },
-              { label: 'GitHub', text: 'shubhambhardwaj07', href: 'https://github.com/shubhambhardwaj07' },
-              { label: 'LinkedIn', text: 'shubham-bhardwaj07', href: 'https://www.linkedin.com/in/shubham-bhardwaj07/' },
+              { label: 'Email',    text: 'Shubham998845@gmail.com',      href: 'mailto:Shubham998845@gmail.com' },
+              { label: 'GitHub',   text: 'shubhambhardwaj07',             href: 'https://github.com/shubhambhardwaj07' },
+              { label: 'LinkedIn', text: 'shubham-bhardwaj07',            href: 'https://www.linkedin.com/in/shubham-bhardwaj07/' },
             ].map(({ label, text, href }) => (
               <a key={label} href={href} target="_blank" rel="noreferrer"
                 className="contact-info-item" data-hover>
@@ -224,7 +196,7 @@ export default function Contact() {
               </a>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <div className="contact-footer">

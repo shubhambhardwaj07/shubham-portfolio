@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
-import SplitHeading from '../../utils/SplitHeading'
-import ScrollRevealText from '../../utils/ScrollRevealText'
+import { useRef, useState, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Experience.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const chapters = [
   {
@@ -46,57 +47,96 @@ const education = {
 }
 
 export default function Experience() {
-  const ref = useRef(null)
+  const sectionRef = useRef(null)
   const [active, setActive] = useState(0)
-  const inView = useInView(ref, { once: true })
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['7%', '-7%'])
-  const lineScale = useTransform(scrollYProgress, [0.15, 0.78], [0, 1])
   const selected = chapters[active]
 
+  /* ── Entry timeline ── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+
+      gsap.set('.exp-ghost',              { y: 40, opacity: 0 })
+      gsap.set('.experience .section-label', { x: -20, opacity: 0 })
+      gsap.set('.exp-eyebrow',            { y: 12, opacity: 0 })
+      gsap.set('.exp-hw',                 { yPercent: 115 })
+      gsap.set('.exp-ledger',             { y: 28, opacity: 0 })
+      gsap.set('.exp-education',          { y: 18, opacity: 0 })
+      gsap.set('.exp-chapter',            { y: 28, opacity: 0 })
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 78%', once: true },
+      })
+
+      tl.to('.exp-ghost',                 { y: 0, opacity: 0.018, duration: 2.4, ease: 'power4.out' }, 0)
+      tl.to('.experience .section-label', { x: 0, opacity: 1, duration: 0.72, ease: 'power3.out' }, 0.1)
+      tl.to('.exp-eyebrow',               { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.18)
+      tl.to('.exp-hw',                    { yPercent: 0, duration: 1.25, stagger: 0.08, ease: 'expo.out' }, 0.24)
+      tl.to('.exp-ledger',                { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out' }, 0.58)
+      tl.to('.exp-education',             { y: 0, opacity: 1, duration: 0.65, ease: 'power3.out' }, 0.62)
+      tl.to('.exp-chapter',               { y: 0, opacity: 1, duration: 0.75, stagger: 0.1, ease: 'expo.out' }, 0.72)
+
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
+  /* ── Ghost parallax ── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.to('.exp-ghost', {
+        yPercent: -28, ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom', end: 'bottom top', scrub: 1.5,
+        },
+      })
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
+  /* ── Timeline line scaleY scrub ── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.exp-line-fill',
+        { scaleY: 0, transformOrigin: 'top center' },
+        {
+          scaleY: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.exp-chapters',
+            start: 'top 75%',
+            end: 'bottom 18%',
+            scrub: 1.2,
+          },
+        }
+      )
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="experience" className="experience" ref={ref}>
+    <section id="experience" className="experience" ref={sectionRef}>
       <div className="section-grid" />
-      <motion.div className="exp-bg-word" style={{ y: bgY }} aria-hidden>
-        Tenure
-      </motion.div>
+      <span className="exp-ghost" aria-hidden>Tenure</span>
 
       <div className="exp-inner">
         <div className="exp-top">
-          <motion.div
-            className="section-label"
-            initial={{ opacity: 0, x: -16 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-            transition={{ duration: 0.55 }}
-          >
+          <div className="section-label">
             <span className="section-label-num">04</span>
             <span>Experience</span>
-          </motion.div>
+          </div>
 
           <div className="exp-heading">
-            <motion.p
-              initial={{ opacity: 0, y: 8 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{ delay: 0.14, duration: 0.5 }}
-            >
-              Employer journey
-            </motion.p>
-            <SplitHeading
-              text="Three companies. One craft, sharpened with every platform."
-             
-              delay={0.04}
-              className="exp-heading-h2"
-            />
+            <p className="exp-eyebrow">Employer journey</p>
+            <h2 className="exp-heading-h2">
+              <span className="exp-hline"><span className="exp-hw">Three companies.</span></span>
+              <span className="exp-hline"><span className="exp-hw">One craft, sharpened</span></span>
+              <span className="exp-hline"><span className="exp-hw">with every platform.</span></span>
+            </h2>
           </div>
         </div>
 
         <div className="exp-showcase">
-          <motion.aside
-            className="exp-ledger"
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ delay: 0.2, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-          >
+          <aside className="exp-ledger">
             <div className="exp-ledger-top">
               <span>{selected.status}</span>
               <strong>{selected.code}</strong>
@@ -109,35 +149,27 @@ export default function Experience() {
               <span>{selected.period}</span>
               <span>{selected.metric}</span>
             </div>
-          </motion.aside>
+          </aside>
 
           <div className="exp-main">
-            <motion.div
-              className="exp-education"
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-              transition={{ delay: 0.22, duration: 0.58 }}
-            >
+            <div className="exp-education">
               <span>Education</span>
               <div>
                 <h3>{education.title}</h3>
                 <p>{education.meta}</p>
               </div>
-            </motion.div>
+            </div>
 
             <div className="exp-chapters">
               <div className="exp-line">
-                <motion.div className="exp-line-fill" style={{ scaleY: lineScale }} />
+                <div className="exp-line-fill" />
               </div>
 
               {chapters.map((chapter, index) => (
-                <motion.article
+                <article
                   key={chapter.company}
                   className={`exp-chapter${active === index ? ' exp-chapter-active' : ''}`}
                   onMouseEnter={() => setActive(index)}
-                  initial={{ opacity: 0, y: 26 }}
-                  animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
-                  transition={{ delay: 0.28 + index * 0.1, duration: 0.64, ease: [0.76, 0, 0.24, 1] }}
                 >
                   <div className="exp-marker">
                     <span>{String(index + 1).padStart(2, '0')}</span>
@@ -157,13 +189,7 @@ export default function Experience() {
                     </div>
 
                     <p className="exp-headline">{chapter.headline}</p>
-                    <ScrollRevealText
-                      text={chapter.summary}
-                      className="exp-summary"
-                      delay={0.1}
-                      wordDelay={0.04}
-                      duration={0.72}
-                    />
+                    <p className="exp-summary">{chapter.summary}</p>
 
                     <div className="exp-tags">
                       {chapter.details.map(detail => (
@@ -171,7 +197,7 @@ export default function Experience() {
                       ))}
                     </div>
                   </div>
-                </motion.article>
+                </article>
               ))}
             </div>
           </div>
