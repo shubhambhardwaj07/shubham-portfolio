@@ -1,77 +1,79 @@
-.ldr-root {
-  position:fixed; inset:0; z-index:99000;
-  background:var(--bg);
-  display:flex; align-items:center; justify-content:center;
-  overflow:hidden;
+/* LOADER — fullscreen pixel materialization
+   One canvas paints everything: the solid field, the
+   fullscreen portrait mosaic (giant → fine blocks) and
+   the 16px box dissolve into the landing. */
+
+.ld-root {
+  position: fixed;
+  inset: 0;
+  z-index: 99000;
+  /* anti-flash base — flipped to transparent when the
+     box dissolve begins (the canvas takes over) */
+  background: var(--bg);
+  overflow: hidden;
 }
 
-.ldr-face {
-  position:absolute; inset:0; pointer-events:none; z-index:0;
-}
-.ldr-face-img {
-  width:100%; height:100%;
-  object-fit:cover; object-position:center 25%;
-  filter:grayscale(1) brightness(0.14) contrast(1.4);
-}
-.ldr-face-vignette {
-  position:absolute; inset:0;
-  background:
-    radial-gradient(ellipse 58% 72% at 50% 50%,
-      transparent 0%,
-      color-mix(in srgb, var(--bg) 55%, transparent) 52%,
-      var(--bg) 80%
-    ),
-    linear-gradient(to bottom, var(--bg) 0%, transparent 20%, transparent 78%, var(--bg) 100%),
-    linear-gradient(to right,  var(--bg) 0%, transparent 20%, transparent 80%, var(--bg) 100%);
+/* The canvas — field + mosaic + dissolve */
+.ld-px {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-.ldr-curtain {
-  position:absolute; top:0; bottom:0; width:50%;
-  background:var(--bg-2); z-index:2; will-change:transform;
-}
-.ldr-cl { left:0;  transform-origin:left; }
-.ldr-cr { right:0; transform-origin:right; }
-
-.ldr-body {
-  position:relative; z-index:3;
-  display:flex; flex-direction:column; align-items:center; gap:14px;
-  will-change:opacity;
+/* ── Corner meta ── */
+.ld-meta {
+  position: absolute;
+  z-index: 3;
+  font-family: var(--mono);
+  font-size: clamp(9px, 1vw, 11px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
 }
 
-/* CRITICAL: overflow hidden so slide never spills out */
-.ldr-clip {
-  overflow:hidden;
-  /* Extra padding so descenders (j, g, y) don't get clipped */
-  padding-bottom:0.1em;
-  line-height:1;
+.ld-tl { top: clamp(20px, 3vh, 34px);      left: clamp(20px, 3vw, 44px); }
+.ld-tr { top: clamp(20px, 3vh, 34px);      right: clamp(20px, 3vw, 44px); }
+.ld-bl { bottom: clamp(22px, 3.4vh, 38px); left: clamp(20px, 3vw, 44px); color: var(--text-3); }
+
+/* Mask for slide reveals */
+.ld-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
 }
 
-.ldr-word {
-  display:block;
-  font-size:clamp(60px, 13vw, 136px);
-  font-weight:700; color:var(--text);
-  letter-spacing:-0.04em; line-height:1;
-  text-align:center; will-change:transform;
+.ld-mask > span {
+  display: inline-block;
+  will-change: transform;
 }
 
-.ldr-lang {
-  font-size:11px; letter-spacing:0.24em; text-transform:uppercase;
-  color:var(--text-2);
+/* ── Giant counter ── */
+.ld-count {
+  position: absolute;
+  bottom: clamp(10px, 2vh, 22px);
+  right: clamp(20px, 3vw, 44px);
+  z-index: 3;
+  font-family: var(--mono);
+  font-size: clamp(64px, 11vw, 148px);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+  color: var(--text);
 }
 
-.ldr-bar-track {
-  width:160px; height:1px; background:var(--border-mid);
-  margin-top:22px; overflow:hidden;
-}
-.ldr-bar {
-  height:100%; background:var(--text);
-  transform-origin:left; transform:scaleX(0); will-change:transform;
+.ld-count .ld-mask { padding-bottom: 0.08em; }
+
+.ld-count-pct {
+  font-size: 0.22em;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  margin-left: 6px;
 }
 
-.ldr-counter {
-  position:absolute;
-  bottom:clamp(24px, 4vw, 40px);
-  right:clamp(24px, 4vw, 48px);
-  font-size:11px; letter-spacing:0.15em; color:var(--text-3);
-  font-family:var(--mono); z-index:3; will-change:opacity;
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .ld-count { font-size: clamp(56px, 17vw, 96px); }
+  .ld-tr { display: none; }
 }

@@ -17,7 +17,8 @@ import YouTube from './components/YouTube/YouTube'
 import Contact from './components/Contact/Contact'
 
 function App() {
-  const [loaderDone, setLoaderDone] = useState(false)
+  const [loaderDone, setLoaderDone] = useState(false) // hero entrance gate — fires mid-morph
+  const [loaderGone, setLoaderGone] = useState(false) // unmount gate — fires after the fade
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -38,8 +39,15 @@ function App() {
     <ThemeProvider>
       <Cursor />
 
-      {/* Loader covers page with z-index:99000 — page always rendered underneath */}
-      {!loaderDone && <Loader onComplete={() => setLoaderDone(true)} />}
+      {/* Loader covers page with z-index:99000 — page always rendered underneath.
+          It stays mounted through the window-morph; the hero entrance fires
+          mid-morph so the landing emerges from the loader. */}
+      {!loaderGone && (
+        <Loader
+          onReveal={() => setLoaderDone(true)}
+          onComplete={() => setLoaderGone(true)}
+        />
+      )}
 
       {/* NO visibility:hidden — loader covers it anyway, no flash */}
       <Navbar />
