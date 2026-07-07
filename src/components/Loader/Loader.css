@@ -27,15 +27,15 @@
   position: absolute;
   z-index: 3;
   font-family: var(--mono);
-  font-size: clamp(9px, 1vw, 11px);
+  font-size: clamp(0.5625rem, 1vw, 0.6875rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-2);
 }
 
-.ld-tl { top: clamp(20px, 3vh, 34px);      left: clamp(20px, 3vw, 44px); }
-.ld-tr { top: clamp(20px, 3vh, 34px);      right: clamp(20px, 3vw, 44px); }
-.ld-bl { bottom: clamp(22px, 3.4vh, 38px); left: clamp(20px, 3vw, 44px); color: var(--text-3); }
+.ld-tl { top: clamp(1.25rem, 3vh, 2.125rem);      left: clamp(1.25rem, 3vw, 2.75rem); }
+.ld-tr { top: clamp(1.25rem, 3vh, 2.125rem);      right: clamp(1.25rem, 3vw, 2.75rem); }
+.ld-bl { bottom: clamp(1.375rem, 3.4vh, 2.375rem); left: clamp(1.25rem, 3vw, 2.75rem); color: var(--text-3); }
 
 /* Mask for slide reveals */
 .ld-mask {
@@ -52,11 +52,11 @@
 /* ── Giant counter ── */
 .ld-count {
   position: absolute;
-  bottom: clamp(10px, 2vh, 22px);
-  right: clamp(20px, 3vw, 44px);
+  bottom: clamp(0.625rem, 2vh, 1.375rem);
+  right: clamp(1.25rem, 3vw, 2.75rem);
   z-index: 3;
   font-family: var(--mono);
-  font-size: clamp(64px, 11vw, 148px);
+  font-size: clamp(4rem, 11vw, 9.25rem);
   font-weight: 700;
   letter-spacing: -0.06em;
   line-height: 0.9;
@@ -69,11 +69,11 @@
   font-size: 0.22em;
   letter-spacing: 0.08em;
   color: var(--text-3);
-  margin-left: 6px;
+  margin-left: 0.375rem;
 }
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-  .ld-count { font-size: clamp(56px, 17vw, 96px); }
+  .ld-count { font-size: clamp(3.5rem, 17vw, 6rem); }
   .ld-tr { display: none; }
 }

@@ -122,7 +122,7 @@ export default function Contact() {
           <span>Contact</span>
         </div>
 
-        <div style={{ marginBottom: 'clamp(40px, 6vw, 64px)' }}>
+        <div style={{ marginBottom: 'clamp(2.5rem, 6vw, 4rem)' }}>
           <h2 className="contact-heading">
             <span className="ct-hline"><span className="ct-hw">Let's build</span></span>
             <span className="ct-hline"><span className="ct-hw">something great.</span></span>

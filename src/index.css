@@ -11,9 +11,12 @@
   --border-hi:  rgba(255,255,255,0.30);
   --line:       rgba(255,255,255,0.055);
   --overlay:    rgba(212,208,200,0.05);
-  --container:  clamp(1200px,82vw,1680px);
-  --section-pad-y: clamp(84px,10vw,168px);
-  --section-pad-x: clamp(20px,6vw,96px);
+  /* Container stays viewport-proportional (vw) — NOT rem — so it fills the
+     same fraction of the screen at every zoom without overflowing. 83.333vw
+     = 1200px at 1440 (identical to before), and scales past that. */
+  --container:  clamp(75rem,83.333vw,150rem);
+  --section-pad-y: clamp(5.25rem,10vw,10.5rem);
+  --section-pad-x: clamp(1.25rem,6vw,6rem);
   --font: 'Space Grotesk','Inter',-apple-system,sans-serif;
   --mono: 'JetBrains Mono','Fira Code','Courier New',monospace;
   --ease:  cubic-bezier(0.76,0,0.24,1);
@@ -50,7 +53,15 @@
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html { font-size:16px; scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+/* Fluid proportional root — the single lever the whole rem-based layout
+   scales from. Pinned at 16px up to 1440px (so current look, laptops, and
+   zoom-IN are untouched); scales up above 1440px — exactly what Ctrl+- /
+   big monitors produce — so the layout grows proportionally instead of
+   freezing and floating. calc(100vw/90) = 16px at 1440. */
+html {
+  font-size: clamp(1rem, calc(100vw / 90), 2.5rem);
+  scroll-behavior:smooth; -webkit-text-size-adjust:100%;
+}
 body {
   font-family:var(--font); background:var(--bg); color:var(--text);
   overflow-x:hidden; -webkit-font-smoothing:antialiased; cursor:none;
@@ -68,32 +79,33 @@ button { font-family:var(--font); }
 .section-grid {
   position:absolute; inset:0; pointer-events:none; overflow:hidden;
   opacity:0.72;
+  /* 1px rule stays crisp; the 1.75rem spacing scales with the fluid root */
   background-image:repeating-linear-gradient(
-    to bottom,var(--line) 0px,var(--line) 1px,transparent 1px,transparent 28px
+    to bottom,var(--line) 0px,var(--line) 1px,transparent 1px,transparent 1.75rem
   );
   mask-image:linear-gradient(to bottom, transparent 0%, black 11%, black 88%, transparent 100%);
   -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 11%, black 88%, transparent 100%);
 }
 .section-label {
-  display:flex; align-items:center; gap:12px;
-  font-size:clamp(10px,0.9vw,12px); letter-spacing:0.18em; text-transform:uppercase;
-  color:var(--text-2); margin-bottom:clamp(32px,5vw,56px); font-weight:700;
+  display:flex; align-items:center; gap:0.75rem;
+  font-size:clamp(0.625rem,0.9vw,0.75rem); letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--text-2); margin-bottom:clamp(2rem,5vw,3.5rem); font-weight:700;
 }
 .section-label-num { font-family:var(--mono); color:var(--text-2); }
 .btn-primary {
-  display:inline-flex; align-items:center; gap:8px;
-  font-size:clamp(10px,1.1vw,12px); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
-  padding:clamp(12px,1.5vw,15px) clamp(20px,2.5vw,28px);
+  display:inline-flex; align-items:center; gap:0.5rem;
+  font-size:clamp(0.625rem,1.1vw,0.75rem); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+  padding:clamp(0.75rem,1.5vw,0.9375rem) clamp(1.25rem,2.5vw,1.75rem);
   background:var(--text); color:var(--bg);
   border-radius:2px; border:1px solid var(--text);
   transition:background .35s var(--ease-premium),border-color .35s var(--ease-premium),color .35s var(--ease-premium),gap .35s var(--ease-premium),transform .35s var(--ease-premium);
   white-space:nowrap;
 }
-.btn-primary:hover { background:var(--bg); color:var(--text); gap:13px; transform:translateY(-1px); }
+.btn-primary:hover { background:var(--bg); color:var(--text); gap:0.8125rem; transform:translateY(-1px); }
 .btn-outline {
-  display:inline-flex; align-items:center; gap:8px;
-  font-size:clamp(10px,1.1vw,12px); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
-  padding:clamp(12px,1.5vw,15px) clamp(20px,2.5vw,28px);
+  display:inline-flex; align-items:center; gap:0.5rem;
+  font-size:clamp(0.625rem,1.1vw,0.75rem); font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+  padding:clamp(0.75rem,1.5vw,0.9375rem) clamp(1.25rem,2.5vw,1.75rem);
   background:transparent; color:var(--text-2);
   border-radius:2px; border:1px solid var(--border-mid);
   transition:border-color .35s var(--ease-premium),color .35s var(--ease-premium),background .35s var(--ease-premium),transform .35s var(--ease-premium); white-space:nowrap;
@@ -101,31 +113,37 @@ button { font-family:var(--font); }
 .btn-outline:hover { border-color:var(--border-hi); color:var(--text); background:var(--overlay); transform:translateY(-1px); }
 .leaflet-control-attribution,.leaflet-control-attribution a { display:none!important; }
 
-@media (min-width: 1800px) {
-  :root { --container: clamp(1500px,82vw,1880px); }
-}
+/* Icons scale with their text — SVG width/height attributes are px-fixed,
+   so without this they'd stay tiny when the fluid root scales up. */
+.btn-primary svg, .btn-outline svg, .form-submit svg { width:1.05em; height:1.05em; }
+.hero-location svg, .contact-map-label svg { width:0.95em; height:0.95em; }
+.abh-hint svg { width:2.6em; height:1em; }
+.theme-toggle svg { width:45%; height:45%; }
+
+/* (Large-screen container override removed — the proportional vw container
+   now scales on its own, so the old 1800px bump is redundant.) */
 
 @media (max-width: 640px) {
   :root {
-    --section-pad-y: clamp(72px,18vw,100px);
-    --section-pad-x: clamp(22px,6vw,28px);
+    --section-pad-y: clamp(4.5rem,18vw,6.25rem);
+    --section-pad-x: clamp(1.375rem,6vw,1.75rem);
   }
 
   .section-grid {
     background-image:repeating-linear-gradient(
-      to bottom,var(--line) 0px,var(--line) 1px,transparent 1px,transparent 34px
+      to bottom,var(--line) 0px,var(--line) 1px,transparent 1px,transparent 2.125rem
     );
   }
 
   .section-label {
-    gap:10px;
-    margin-bottom:clamp(24px,8vw,38px);
+    gap:0.625rem;
+    margin-bottom:clamp(1.5rem,8vw,2.375rem);
     letter-spacing:0.15em;
   }
 
   .btn-primary,
   .btn-outline {
-    min-height:44px;
+    min-height:2.75rem;
     justify-content:center;
   }
 }

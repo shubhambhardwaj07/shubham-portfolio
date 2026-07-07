@@ -19,11 +19,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: clamp(20px, 3vw, 36px);
+  margin-bottom: clamp(1.25rem, 3vw, 2.25rem);
 }
 
 .yt-kicker {
-  font-size: clamp(10px, 0.9vw, 12px);
+  font-size: clamp(0.625rem, 0.9vw, 0.75rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-3);
@@ -34,7 +34,7 @@
 .yt-block {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: clamp(480px, 60vw, 720px);
+  min-height: clamp(30rem, 60vw, 45rem);
   border: 1px solid var(--border-mid);
   overflow: hidden;
   will-change: transform, clip-path;
@@ -46,7 +46,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(28px, 4vw, 56px);
+  padding: clamp(1.75rem, 4vw, 3.5rem);
   border-right: 1px solid var(--border-mid);
   background:
     linear-gradient(145deg, var(--overlay) 0%, transparent 55%),
@@ -56,49 +56,58 @@
 .yt-block-left-top {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.5vw, 26px);
+  gap: clamp(1rem, 2.5vw, 1.625rem);
 }
 
 .yt-handle-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .yt-badge-mark {
   flex-shrink: 0;
-  width: clamp(32px, 3.2vw, 44px);
+  width: clamp(2rem, 3.2vw, 2.75rem);
   aspect-ratio: 1;
   background: var(--text);
   color: var(--bg);
   display: grid;
   place-items: center;
   font-family: var(--mono);
-  font-size: clamp(9px, 1vw, 12px);
+  font-size: clamp(0.5625rem, 1vw, 0.75rem);
   letter-spacing: -0.04em;
   font-weight: 700;
 }
 
 .yt-handle {
-  font-size: clamp(10px, 0.9vw, 12px);
+  font-size: clamp(0.625rem, 0.9vw, 0.75rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-3);
   font-family: var(--mono);
 }
 
-/* Title — clip-reveal lines */
-.yt-title { max-width: 10ch; }
+/* Title — clip-reveal lines.
+   Font size lives on the h2 itself so ch / em (max-width,
+   mask padding) resolve against the TITLE's size — the old
+   10ch resolved against the inherited body font and cut
+   "The Rebel Diplomat" mid-word. */
+.yt-title {
+  font-size: clamp(1.75rem, 4.2vw, 3.875rem);
+  max-width: 10ch;
+}
 
 .yt-title-hline {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.04em;
+  /* room for the "p" descender inside the reveal mask */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.06em;
 }
 
 .yt-title-line {
   display: block;
-  font-size: clamp(28px, 4.2vw, 62px);
+  font-size: inherit;
   line-height: 1.0;
   letter-spacing: -0.045em;
   color: var(--text);
@@ -106,12 +115,12 @@
 }
 
 .yt-manifesto {
-  font-size: clamp(13px, 1.4vw, 16px);
+  font-size: clamp(0.8125rem, 1.4vw, 1rem);
   line-height: 1.7;
   color: var(--text-2);
-  max-width: 420px;
+  max-width: 26.25rem;
   border-left: 2px solid var(--border-hi);
-  padding-left: clamp(12px, 1.5vw, 18px);
+  padding-left: clamp(0.75rem, 1.5vw, 1.125rem);
   margin: 0;
 }
 
@@ -119,7 +128,7 @@
 .yt-block-left-foot {
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2.5vw, 24px);
+  gap: clamp(1rem, 2.5vw, 1.5rem);
 }
 
 /* Stats */
@@ -134,23 +143,23 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: clamp(12px, 1.8vw, 18px) 0;
+  gap: 0.25rem;
+  padding: clamp(0.75rem, 1.8vw, 1.125rem) 0;
   border-right: 1px solid var(--border);
 }
 .yt-stat:last-child { border-right: 0; }
-.yt-stat:not(:first-child) { padding-left: clamp(12px, 1.8vw, 18px); }
+.yt-stat:not(:first-child) { padding-left: clamp(0.75rem, 1.8vw, 1.125rem); }
 
 .yt-stat-val {
   font-family: var(--mono);
-  font-size: clamp(22px, 3.2vw, 44px);
+  font-size: clamp(1.375rem, 3.2vw, 2.75rem);
   line-height: 1;
   letter-spacing: -0.06em;
   color: var(--text);
 }
 
 .yt-stat-label {
-  font-size: clamp(9px, 0.82vw, 10px);
+  font-size: clamp(0.5625rem, 0.82vw, 0.625rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-2);
@@ -161,25 +170,25 @@
 .yt-pillars {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .yt-pillar {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: clamp(10px, 1vw, 11px);
+  gap: 0.4375rem;
+  font-size: clamp(0.625rem, 1vw, 0.6875rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-2);
   border: 1px solid var(--border-mid);
-  padding: 5px 10px 5px 8px;
+  padding: 0.3125rem 0.625rem 0.3125rem 0.5rem;
   border-radius: 2px;
 }
 
 .yt-pillar-num {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: var(--text-3);
   letter-spacing: 0.06em;
 }
@@ -252,10 +261,10 @@
 
 .yt-img-dateline {
   position: absolute;
-  bottom: clamp(16px, 2.5vw, 28px);
-  right: clamp(16px, 2.5vw, 28px);
+  bottom: clamp(1rem, 2.5vw, 1.75rem);
+  right: clamp(1rem, 2.5vw, 1.75rem);
   z-index: 2;
-  font-size: clamp(8px, 0.72vw, 10px);
+  font-size: clamp(0.5rem, 0.72vw, 0.625rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(212,208,200,0.48);
@@ -271,7 +280,7 @@
 .yt-block::before {
   content: '';
   position: absolute;
-  inset: 14px;
+  inset: 0.875rem;
   border: 1px solid rgba(255,255,255,0.04);
   z-index: 3;
   pointer-events: none;
@@ -289,7 +298,7 @@
 
   .yt-block-right {
     aspect-ratio: 16 / 9;
-    min-height: 280px;
+    min-height: 17.5rem;
   }
 
   .yt-img-dateline { writing-mode: horizontal-tb; }
@@ -299,15 +308,15 @@
   .yt-label-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .yt-block-right {
     aspect-ratio: 4 / 3;
-    min-height: 220px;
+    min-height: 13.75rem;
   }
 
-  .yt-title { font-size: clamp(28px, 9vw, 44px); }
+  .yt-title { font-size: clamp(1.75rem, 9vw, 2.75rem); }
 
   .yt-stats { flex-wrap: wrap; }
   .yt-stat { min-width: 30%; }
