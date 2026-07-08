@@ -281,21 +281,65 @@
 }
 
 .abh-craft-card {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: clamp(0.625rem, 1.4vh, 1rem);
   padding: clamp(1rem, 2.2vh, 1.625rem) clamp(1rem, 1.8vw, 1.5rem);
   border: 1px solid var(--border-mid);
   background:
-    linear-gradient(150deg, var(--overlay), transparent 60%),
-    var(--bg);
-  transition: border-color 0.35s ease, transform 0.45s var(--ease-premium);
+    linear-gradient(150deg, var(--overlay), transparent 52%),
+    radial-gradient(120% 82% at 100% 0%, color-mix(in srgb, var(--text) 3%, transparent), transparent 62%),
+    var(--bg-2);
+  transition: border-color 0.35s ease, transform 0.45s var(--ease-premium), box-shadow 0.45s var(--ease-premium);
 }
+
+/* keep real content above the ghost numeral / edge accent */
+.abh-craft-card > .abh-craft-top,
+.abh-craft-card > .abh-craft-title,
+.abh-craft-card > .abh-craft-copy { position: relative; z-index: 1; }
 
 .abh-craft-card:hover {
   border-color: var(--border-hi);
   transform: translateY(-0.25rem);
+  box-shadow: 0 1.5rem 3rem -1.5rem rgba(0,0,0,0.5);
 }
+
+/* Ghost numeral watermark inside each card */
+.abh-craft-ghost {
+  position: absolute;
+  right: -0.12em;
+  bottom: -0.3em;
+  font-family: var(--mono);
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 900;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text);
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme='light'] .abh-craft-ghost { opacity: 0.09; }
+
+/* Bottom accent line — draws in on hover */
+.abh-craft-edge {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--text), transparent 72%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.55s var(--ease-premium);
+  z-index: 2;
+}
+
+.abh-craft-card:hover .abh-craft-edge { transform: scaleX(1); }
 
 .abh-craft-top {
   display: flex;
@@ -393,8 +437,12 @@
 .abh-stats {
   display: flex;
   flex-wrap: wrap;
-  border-top: 1px solid var(--border-mid);
-  border-bottom: 1px solid var(--border-mid);
+  border: 1px solid var(--border-mid);
+  border-radius: 2px;
+  overflow: hidden;
+  background:
+    linear-gradient(150deg, var(--overlay), transparent 60%),
+    var(--bg-2);
 }
 
 .abh-stat {
@@ -405,9 +453,10 @@
   gap: 0.5rem;
   padding: clamp(1rem, 2.4vh, 1.625rem) clamp(1rem, 2vw, 2rem);
   border-right: 1px solid var(--border);
+  transition: background 0.35s ease;
 }
 
-.abh-stat:first-child { padding-left: 0; }
+.abh-stat:hover { background: color-mix(in srgb, var(--text) 4%, transparent); }
 .abh-stat:last-child { border-right: none; }
 
 .abh-stat-num {
@@ -437,19 +486,26 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding-top: clamp(0.625rem, 1.4vh, 1rem);
+  padding: clamp(1rem, 1.8vw, 1.5rem);
+  border: 1px solid var(--border-mid);
+  background:
+    linear-gradient(150deg, var(--overlay), transparent 62%),
+    var(--bg-2);
+  transition: border-color 0.35s ease;
 }
+
+.abh-record-col:hover { border-color: var(--border-hi); }
 
 .abh-record-label {
   font-family: var(--mono);
   font-size: clamp(0.5625rem, 0.9vw, 0.6875rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-2);
   font-weight: 700;
-  padding-bottom: 0.375rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border-mid);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.375rem;
 }
 
 .abh-record-row {
@@ -533,6 +589,225 @@
   transform-origin: left center;
 }
 
+/* ═══════════════════════════════════════════════
+   ENRICHMENT — filled surfaces & plate furniture
+   so panels 2-4 read premium, not pale/empty
+═══════════════════════════════════════════════ */
+
+/* Panel corner-sheen — kills the flat dark emptiness */
+.abh-p2, .abh-p3, .abh-p4 {
+  background:
+    radial-gradient(80% 60% at 92% 4%, color-mix(in srgb, var(--text) 3.5%, transparent), transparent 60%),
+    radial-gradient(70% 50% at 0% 100%, color-mix(in srgb, var(--text) 2.5%, transparent), transparent 60%),
+    linear-gradient(180deg, color-mix(in srgb, var(--text) 1.4%, transparent), transparent 42%);
+}
+
+/* Filled tab-chip kicker (panels 2-4) */
+.abh-kicker.abh-tab {
+  align-self: flex-start;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--border-mid);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  color: var(--text-2);
+}
+
+/* ── Panel 2 — non-negotiables mini-plate ── */
+.abh-mini {
+  margin-top: clamp(0.5rem, 1.6vh, 1.125rem);
+  max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: clamp(1rem, 2vh, 1.5rem);
+  border: 1px solid var(--border-mid);
+  background:
+    linear-gradient(150deg, var(--overlay), transparent 58%),
+    var(--bg-2);
+}
+
+.abh-mini-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-family: var(--mono);
+  font-size: clamp(0.5625rem, 0.9vw, 0.6875rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  font-weight: 700;
+}
+
+.abh-mini-count {
+  font-size: clamp(1.125rem, 2vw, 1.75rem);
+  letter-spacing: -0.05em;
+  color: var(--text);
+}
+
+.abh-mini-bar {
+  height: 2px;
+  background: var(--border-mid);
+  overflow: hidden;
+}
+
+.abh-mini-bar i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--text);
+}
+
+.abh-mini-note {
+  font-size: clamp(0.6875rem, 1.1vw, 0.8125rem);
+  line-height: 1.6;
+  color: var(--text-3);
+}
+
+/* ── Panel 3 — two-col grid + guarantee row check + seal ── */
+/* Full-width headline on top, then guarantees + seal below */
+.abh-p3-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3.2vh, 2.75rem);
+}
+
+.abh-p3-head {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.6vh, 1.25rem);
+}
+
+/* The one-liner — never breaks on desktop */
+.abh-h2-wide { white-space: nowrap; }
+
+.abh-p3-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(15rem, 0.6fr);
+  gap: clamp(2rem, 4vw, 5rem);
+  align-items: center;
+}
+
+.abh-p3-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vh, 1.5rem);
+  min-width: 0;
+}
+
+.abh-path-check {
+  flex-shrink: 0;
+  align-self: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  border: 1px solid var(--border-mid);
+  display: grid;
+  place-items: center;
+  color: var(--text-2);
+  transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease;
+}
+
+.abh-path-stop:hover .abh-path-check {
+  border-color: var(--border-hi);
+  color: var(--bg);
+  background: var(--text);
+}
+
+/* The seal plate */
+.abh-seal {
+  align-self: center;
+  position: relative;
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+  border: 1px solid var(--border-hi);
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--text) 5%, transparent), transparent 62%),
+    linear-gradient(160deg, var(--overlay), transparent 55%),
+    var(--bg-2);
+}
+
+.abh-seal::before {
+  content: '';
+  position: absolute;
+  inset: 0.5rem;
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.abh-seal-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 1.6vh, 1.25rem);
+  text-align: center;
+}
+
+.abh-seal-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: clamp(0.5625rem, 0.9vw, 0.6875rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  font-weight: 700;
+}
+
+.abh-seal-star { color: var(--text-3); }
+
+.abh-seal-mark {
+  width: clamp(3.5rem, 7vw, 5rem);
+  height: clamp(3.5rem, 7vw, 5rem);
+  border-radius: 50%;
+  border: 1px solid var(--border-hi);
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  box-shadow: inset 0 0 0 0.35rem color-mix(in srgb, var(--text) 4%, transparent);
+}
+
+.abh-seal-mark svg { width: 54%; height: 54%; }
+
+.abh-seal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.abh-seal-line {
+  font-size: clamp(0.75rem, 1.2vw, 0.9375rem);
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+.abh-seal-strong {
+  color: var(--text);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.abh-seal-barcode {
+  width: 72%;
+  height: 1.15rem;
+  opacity: 0.42;
+  background: repeating-linear-gradient(90deg,
+    var(--text) 0 1px, transparent 1px 0.1875rem,
+    var(--text) 0.1875rem 0.25rem, transparent 0.25rem 0.5rem,
+    var(--text) 0.5rem 0.625rem, transparent 0.625rem 0.8125rem);
+}
+
+.abh-seal-foot {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: clamp(0.5rem, 0.8vw, 0.625rem);
+  letter-spacing: 0.14em;
+  color: var(--text-3);
+}
+
 /* ═══ MOBILE — vertical stack, no pin ═══ */
 @media (max-width: 860px) {
   .abh-stage {
@@ -585,8 +860,15 @@
   .abh-progress { display: none; }
 
   .abh-p2-grid { grid-template-columns: 1fr; }
+  .abh-p3-body { grid-template-columns: 1fr; }
+  .abh-h2-wide { white-space: normal; }
 
   .abh-craft-grid { grid-template-columns: 1fr; }
+
+  .abh-mini { max-width: none; }
+
+  /* Seal centres and caps its width on mobile */
+  .abh-seal { align-self: stretch; max-width: 26rem; margin: 0 auto; width: 100%; }
 
   .abh-record-grid {
     grid-template-columns: 1fr;
@@ -599,7 +881,6 @@
     padding: 1rem 0.75rem;
   }
 
-  .abh-stat:nth-child(odd) { padding-left: 0; }
   .abh-stat:nth-child(2n) { border-right: none; }
   .abh-stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
 

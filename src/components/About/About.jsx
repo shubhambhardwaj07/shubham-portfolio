@@ -310,23 +310,38 @@ export default function About() {
             <span className="abh-panel-num" aria-hidden="true">02</span>
             <div className="abh-panel-in abh-p2-grid">
               <div className="abh-p2-left">
-                <span className="abh-kicker abh-rev">Page 02 — how I work</span>
+                <span className="abh-kicker abh-tab abh-rev">Page 02 — how I work</span>
                 <h3 className="abh-h2 abh-rev">Principles,<br />then tools.</h3>
                 <p className="abh-p2-note abh-rev">
                   The stack changes every year. These don&apos;t —
                   they&apos;re what the tools are for.
                 </p>
+
+                {/* Non-negotiables mini-plate — fills the left column */}
+                <div className="abh-mini abh-rev">
+                  <div className="abh-mini-head">
+                    <span>Non-negotiables</span>
+                    <span className="abh-mini-count">04</span>
+                  </div>
+                  <div className="abh-mini-bar"><i /></div>
+                  <p className="abh-mini-note">
+                    Every tool choice answers to these four. When they
+                    conflict, the principle wins — not the trend.
+                  </p>
+                </div>
               </div>
 
               <div className="abh-craft-grid">
                 {PRINCIPLES.map((c) => (
                   <div className="abh-craft-card abh-rev" key={c.idx}>
+                    <span className="abh-craft-ghost" aria-hidden="true">{c.idx}</span>
                     <div className="abh-craft-top">
                       <span className="abh-craft-idx">{c.idx}</span>
                       <span className="abh-craft-tags">{c.tag}</span>
                     </div>
                     <span className="abh-craft-title">{c.title}</span>
                     <p className="abh-craft-copy">{c.copy}</p>
+                    <span className="abh-craft-edge" aria-hidden="true" />
                   </div>
                 ))}
               </div>
@@ -336,23 +351,61 @@ export default function About() {
           {/* ═══ PAGE 03 — what you get ═══ */}
           <div className="abh-panel abh-p3">
             <span className="abh-panel-num" aria-hidden="true">03</span>
-            <div className="abh-panel-in">
-              <span className="abh-kicker abh-rev">Page 03 — the guarantees</span>
-              <h3 className="abh-h2 abh-rev">What you<br />actually get.</h3>
-              <div className="abh-path">
-                {GUARANTEES.map((g) => (
-                  <div className="abh-path-stop abh-rev" key={g.idx}>
-                    <span className="abh-path-idx">{g.idx}</span>
-                    <div className="abh-path-main">
-                      <span className="abh-path-firm">{g.title}</span>
-                      <span className="abh-path-note">{g.note}</span>
-                    </div>
-                  </div>
-                ))}
+            <div className="abh-panel-in abh-p3-wrap">
+              <div className="abh-p3-head">
+                <span className="abh-kicker abh-tab abh-rev">Page 03 — the guarantees</span>
+                <h3 className="abh-h2 abh-h2-wide abh-rev">What you actually get.</h3>
               </div>
-              <span className="abh-path-foot abh-rev">
-                04 guarantees · 00 asterisks
-              </span>
+
+              <div className="abh-p3-body">
+                <div className="abh-p3-left">
+                  <div className="abh-path">
+                    {GUARANTEES.map((g) => (
+                      <div className="abh-path-stop abh-rev" key={g.idx}>
+                        <span className="abh-path-idx">{g.idx}</span>
+                        <span className="abh-path-check" aria-hidden="true">
+                          <svg width="12" height="12" viewBox="0 0 14 14" fill="none"
+                            stroke="currentColor" strokeWidth="1.6">
+                            <polyline points="2 7.5 5.5 11 12 3.5" />
+                          </svg>
+                        </span>
+                        <div className="abh-path-main">
+                          <span className="abh-path-firm">{g.title}</span>
+                          <span className="abh-path-note">{g.note}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <span className="abh-path-foot abh-rev">
+                    04 guarantees · 00 asterisks
+                  </span>
+                </div>
+
+                {/* Service-guarantee seal — fills the right half */}
+                <aside className="abh-seal abh-rev" aria-hidden="true">
+                <div className="abh-seal-frame">
+                  <div className="abh-seal-top">
+                    <span>Service</span>
+                    <span className="abh-seal-star">✦</span>
+                    <span>Warranty</span>
+                  </div>
+                  <div className="abh-seal-mark">
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <polyline points="13 24.5 21 33 36 16" />
+                    </svg>
+                  </div>
+                  <div className="abh-seal-body">
+                    <span className="abh-seal-line">Honoured for the</span>
+                    <span className="abh-seal-line abh-seal-strong">life of the engagement</span>
+                  </div>
+                  <div className="abh-seal-barcode" />
+                  <div className="abh-seal-foot">
+                    <span>SB · 2026</span>
+                    <span>REF · G04</span>
+                  </div>
+                </div>
+                </aside>
+              </div>
             </div>
           </div>
 
@@ -360,7 +413,7 @@ export default function About() {
           <div className="abh-panel abh-p4">
             <span className="abh-panel-num" aria-hidden="true">04</span>
             <div className="abh-panel-in">
-              <span className="abh-kicker abh-rev">Page 04 — the record</span>
+              <span className="abh-kicker abh-tab abh-rev">Page 04 — the record</span>
 
               <div className="abh-stats abh-rev">
                 {STATS.map((s, i) => (
