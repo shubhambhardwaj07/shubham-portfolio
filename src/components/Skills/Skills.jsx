@@ -144,6 +144,28 @@ export default function Skills() {
     return () => ctx.revert()
   }, [])
 
+  /* ═══════════════════════════════════════════════
+     3. LIVING LIGHT — cursor-tracked spotlight and
+     border-glow per card (fine pointers only).
+     Writes --mx/--my consumed by .skd-spot/.skd-edgeglow.
+  ═══════════════════════════════════════════════ */
+  useEffect(() => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+
+    const cards = Array.from(sectionRef.current?.querySelectorAll('.skd-card') ?? [])
+    const cleanups = cards.map((card) => {
+      const onMove = (e) => {
+        const r = card.getBoundingClientRect()
+        card.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`)
+        card.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`)
+      }
+      card.addEventListener('mousemove', onMove)
+      return () => card.removeEventListener('mousemove', onMove)
+    })
+
+    return () => cleanups.forEach((fn) => fn())
+  }, [])
+
   return (
     <section id="skills" className="skd-section" ref={sectionRef}>
       <div className="section-grid" aria-hidden="true" />
@@ -179,6 +201,13 @@ export default function Skills() {
               key={card.id}
               style={{ '--i': i }}
             >
+              {/* Living light — orbiting border sheen, cursor spotlight,
+                  cursor border-glow, film grain */}
+              <span className="skd-sheen" aria-hidden="true" />
+              <span className="skd-spot" aria-hidden="true" />
+              <span className="skd-edgeglow" aria-hidden="true" />
+              <span className="skd-grain" aria-hidden="true" />
+
               {/* Card furniture */}
               <span className="skd-card-num" aria-hidden="true">{card.num}</span>
               <span className="skd-spine" aria-hidden="true">

@@ -143,7 +143,108 @@
   z-index: 6;
 }
 
-/* Giant outlined numeral */
+/* ═══ LIVING LIGHT ═══
+   A slow shine orbits the border at rest; on hover a
+   cursor-tracked spotlight sweeps the surface and a
+   glow rides the border ring near the pointer. */
+
+@property --skd-ang {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Orbiting border sheen — always on, quiet */
+.skd-sheen {
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  background: conic-gradient(from var(--skd-ang),
+    transparent 0deg,
+    color-mix(in srgb, var(--text) 60%, transparent) 24deg,
+    transparent 70deg,
+    transparent 175deg,
+    color-mix(in srgb, var(--text) 24%, transparent) 205deg,
+    transparent 255deg);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.55;
+  animation: skd-orbit 9s linear infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes skd-orbit {
+  to { --skd-ang: 360deg; }
+}
+
+/* Cursor spotlight — soft light pooling under the pointer */
+.skd-spot {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(34rem circle at var(--mx, 50%) var(--my, 18%),
+    color-mix(in srgb, var(--text) 6%, transparent),
+    transparent 62%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Cursor border-glow — bright arc on the ring near the pointer */
+.skd-edgeglow {
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  background: radial-gradient(18rem circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--text) 70%, transparent),
+    transparent 72%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .skd-card:hover .skd-spot { opacity: 1; }
+  .skd-card:hover .skd-edgeglow { opacity: 1; }
+  /* hand the border over to the cursor glow while hovering */
+  .skd-card:hover .skd-sheen { opacity: 0.18; }
+}
+
+/* Film grain — barely-there tactility over the plate */
+.skd-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 10rem 10rem;
+  mix-blend-mode: overlay;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 3;
+}
+
+[data-theme='light'] .skd-grain {
+  mix-blend-mode: multiply;
+  opacity: 0.05;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skd-sheen { animation: none; }
+}
+
+@media (max-width: 640px) {
+  /* battery: no orbiting repaint on phones */
+  .skd-sheen { display: none; }
+}
+
+/* Giant numeral — metallic: soft gradient fill + hairline edge */
 .skd-card-num {
   position: absolute;
   right: clamp(-1rem, -0.8vw, -0.375rem);
@@ -153,14 +254,27 @@
   line-height: 0.9;
   letter-spacing: -0.06em;
   color: transparent;
-  -webkit-text-stroke: 1px var(--text);
-  opacity: 0.07;
+  background: linear-gradient(165deg,
+    color-mix(in srgb, var(--text) 15%, transparent) 0%,
+    color-mix(in srgb, var(--text) 4%, transparent) 52%,
+    transparent 82%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--text) 17%, transparent);
   pointer-events: none;
   user-select: none;
   z-index: 0;
 }
 
-[data-theme='light'] .skd-card-num { opacity: 0.11; }
+[data-theme='light'] .skd-card-num {
+  background: linear-gradient(165deg,
+    color-mix(in srgb, var(--text) 19%, transparent) 0%,
+    color-mix(in srgb, var(--text) 5%, transparent) 52%,
+    transparent 82%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--text) 24%, transparent);
+}
 
 /* Spine — vertical plate label along the left edge */
 .skd-spine {
